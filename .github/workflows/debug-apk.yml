@@ -9,20 +9,29 @@ permissions:
 
 jobs:
   build:
-    # The Ubuntu 24.04 image provides sdkmanager and the Java 17 runtime it needs.
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
-      - uses: actions/setup-java@v4
+      - name: Set up Java for the Android SDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      # Do not assume a hosted runner image has sdkmanager in PATH.
+      - name: Install Android SDK 30 and build tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platforms;android-30 build-tools;30.0.2'
+          log-accepted-android-sdk-licenses: false
+      - name: Set up Java for Gradle
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '11'
           cache: gradle
-      - name: Install the Android SDK used by v1.3.3
-        run: JAVA_HOME="$JAVA_HOME_17_X64" sdkmanager 'platforms;android-30' 'build-tools;30.0.2'
       - name: Test and build the offline variant
         run: bash ./gradlew --no-daemon :app:testFreeDebugUnitTest :app:assembleFreeDebug
       - name: Verify the bundled soundbank
