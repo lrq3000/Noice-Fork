@@ -1,6 +1,6 @@
 # Noice-Fork
 
-Noice-Fork is an independent, offline-first ambient sound mixer for Android based on [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). Mix sounds at independent volume levels, save them as presets, and share the recipes. The soundbank is included in the app, so playback does not require an account, a subscription, or a network connection.
+Noice-Fork is an independent, offline-first ambient sound mixer for Android based on [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). Mix sounds at independent volume levels, save them as presets, and share the recipes. The soundbank is included in the app, so playback does not require an account, a subscription, or a network connection. [Stephen Karl Larroque (@LRQ3000)](docs/CONTRIBUTORS.md) maintains the fork.
 
 ## Why fork Noice V1?
 
@@ -22,10 +22,12 @@ Open [Actions → Debug APK](https://github.com/LRQ3000/Noice-Fork/actions/workf
 
 To build locally with JDK 11 and Android SDK 30, run `./gradlew :app:testFreeDebugUnitTest :app:assembleFreeDebug` (use `gradlew.bat` on Windows). The free variant has no Google services configuration requirement.
 
+Noice-Fork is not listed on F-Droid or Google Play. The [F-Droid submission draft](docs/fdroid/SUBMISSION.md) describes the separate, non-debug package.
+
 ## Community presets and credits
 
-Use a preset's **Share** action to copy or send its recipe, not any sound files. If Android opens the link in a browser, copy it and use **Import preset link** in the app. Contributions are welcome: small maintenance fixes and presets that use the bundled library are especially useful.
+Use a preset's **Share** action to copy or send its recipe, not any sound files. Copy the entire link and use **Import preset link** in the app. [The preset guide](docs/PRESETS.md) explains the format and compatibility. Report issues or share presets in the [fork’s issue tracker](https://github.com/LRQ3000/Noice-Fork/issues), or start with the [contribution guide](docs/CONTRIBUTING.md).
 
-Noice-Fork credits Ashutosh Gangwar and the [upstream contributors](docs/CONTRIBUTORS.md). The software is licensed under the [GNU GPL v3](LICENSE). Individual sound clips have separate credits and licenses in [the soundbank manifest](docs/audio-sources.json); the two licenses should not be conflated.
+Ashutosh Gangwar and the [original Noice contributors](docs/CONTRIBUTORS.md) deserve particular credit for making a small offline app sound so convincing. The inventive dual-sample engine and the care taken to choose and blend the original recordings make Noice V1 worth preserving. The software is licensed under the [GNU GPL v3](LICENSE). Individual sound clips have separate credits and licenses in [the soundbank manifest](docs/audio-sources.json); the two licenses should not be conflated.
 
 The manifest names the creator, original source, edits, and SHA-256 for each audio file. License references: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), and [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Replacements preserve the original preset's sound keys and slider settings, but can sound different.
