@@ -1,10 +1,10 @@
 # Noice-Fork changelog
 
-## Unreleased
+## v1.4.1
 
 - Updated onboarding, About, support links, and project documentation for Noice-Fork.
-- New preset links use the fork’s GitHub project; legacy V1 recipes remain importable.
-- Prepared a draft F-Droid submission and an unsigned free release build.
+- New preset links use the fork’s GitHub project and support long names; legacy V1 recipes remain importable.
+- Documented optional Android-managed backups and prepared an F-Droid submission draft for the unsigned free release build.
 
 ## v1.4.0
 

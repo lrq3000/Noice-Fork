@@ -1,0 +1,1 @@
+Updated onboarding, About, and support links for Noice-Fork. New preset links carry the recipe in the GitHub URL fragment and import offline, including long names. Older Noice V1 links still work.

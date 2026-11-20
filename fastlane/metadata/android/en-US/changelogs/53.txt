@@ -1,1 +1,1 @@
-Initial Noice-Fork listing: offline bundled sounds, the Womb Simulator preset, and shareable recipes with offline import. Updated onboarding and project links distinguish the fork from the original app.
+First standalone Noice-Fork build: bundled offline sounds, the Womb Simulator preset, and offline import of Noice V1 recipes.
