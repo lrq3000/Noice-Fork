@@ -12,11 +12,18 @@
 
 ## Features
 
+- 🔁 **Dual-sampling engine.** A signature feature of Noice V1 and Noice-Fork. For sounds such as Bonfire, the engine plays two short recordings of deliberately different lengths instead of looping a single track. The layers restart at different times, so the combined pattern takes longer to repeat and can sound less repetitive without a long recording.
 - 🎚️ **Build your own soundscape.** Play several sounds at once and set each sound’s volume independently. Set how long occasional sounds like thunder can go between repeats.
 - ⭐ **Start with a preset.** Try Thunderstorm, Beach, Camping, or [Womb Simulator](#womb-simulator) (to soothe the tiniest, loudest roommate). Generate a random mix by mood and intensity, or save your own.
 - ⏱️ **Set a timer.** Stop playback after a set duration with **Sleep Timer**, or use **Wake-up Timer** to start a saved mix at a chosen time.
 - 🎧 **Listen in the background.** Control playback from the Android media notification. Add preset shortcuts on supported launchers.
 - 🔗 **Share or back up your mixes.** Send a link containing the recipe, not the recordings, or export your preset collection to a file. Noice V1 preset links are still importable.
+
+### How dual sampling works
+
+In an idealized example, two 40- and 45-second loops that start together line up again after six minutes. Each recording still repeats, but it overlaps with a different part of the other recording each time it restarts, until the loops line up again. That is the idea behind the [original dual-sampling proposal](https://github.com/trynoice/android-app/issues/62).
+
+The perceptual effect is **less noticeable repetition in an auditory texture**. In [listening experiments on repeated sound textures](https://doi.org/10.1016/j.cognition.2025.106350), repetition was generally harder to detect as the repeating segment got longer. The study did not test Noice or establish that its repeats go unnoticed.
 
 ## Screenshots
 
@@ -55,7 +62,7 @@ The app does not request Internet access and includes no ads or analytics. Prese
 
 ## About the fork
 
-Noice-Fork independently maintains the offline mixer from [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). For some sounds, it plays two short recordings of different lengths in parallel: the layers still repeat, but their loop boundaries usually do not line up, so the combined sound can feel longer without large recordings. [Noice V2](https://trynoice.com/news/v2-announcement) took a different approach with longer, streamed recordings; this fork does not maintain V2.
+Noice-Fork independently maintains the offline mixer and [dual-sampling engine](#how-dual-sampling-works) from [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). [Noice V2](https://trynoice.com/news/v2-announcement) took a different approach with longer, streamed recordings; this fork does not maintain V2.
 
 ## Authorship
 
