@@ -6,15 +6,17 @@
 
 **Noice-Fork is a free, offline ambient sound mixer for Android phones and tablets.** Layer rain, wind, a crackling fire, or steady noise to make a soundscape for focus, relaxation, or bedtime. The sounds are bundled, so you can start listening on the first launch without a connection, an account, or a subscription.
 
-**[Download the APK from GitHub Releases](https://github.com/LRQ3000/Noice-Fork/releases/latest)** · [Changelog](docs/CHANGELOG.md) · [Report an issue](https://github.com/LRQ3000/Noice-Fork/issues)
+<a href="https://github.com/LRQ3000/Noice-Fork/releases/latest"><img src="https://img.shields.io/badge/Download%20APK-08785c?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="Download APK from GitHub Releases" width="260"></a>
+
+[Changelog](docs/CHANGELOG.md) · [Report an issue](https://github.com/LRQ3000/Noice-Fork/issues)
 
 ## Features
 
-- **Build your own soundscape.** Play several sounds at once and set each sound’s volume independently. Set how long occasional sounds like thunder can go between repeats.
-- **Start with a preset.** Try Thunderstorm, Beach, Camping, or Womb Simulator, generate a random mix by mood and intensity, or save your own.
-- **Set a timer.** Stop playback after a set duration with **Sleep Timer**, or use **Wake-up Timer** to start a saved mix at a chosen time.
-- **Listen in the background.** Control playback from the Android media notification. Add preset shortcuts on supported launchers.
-- **Share or back up your mixes.** Send a link containing the recipe, not the recordings, or export your preset collection to a file. Noice V1 preset links are still importable.
+- 🎚️ **Build your own soundscape.** Play several sounds at once and set each sound’s volume independently. Set how long occasional sounds like thunder can go between repeats.
+- ⭐ **Start with a preset.** Try Thunderstorm, Beach, Camping, or Womb Simulator, generate a random mix by mood and intensity, or save your own.
+- ⏱️ **Set a timer.** Stop playback after a set duration with **Sleep Timer**, or use **Wake-up Timer** to start a saved mix at a chosen time.
+- 🎧 **Listen in the background.** Control playback from the Android media notification. Add preset shortcuts on supported launchers.
+- 🔗 **Share or back up your mixes.** Send a link containing the recipe, not the recordings, or export your preset collection to a file. Noice V1 preset links are still importable.
 
 ## Screenshots
 
