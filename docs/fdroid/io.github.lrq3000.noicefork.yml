@@ -1,0 +1,28 @@
+Categories:
+  - Ambient Sound
+  - Meditation
+License: GPL-3.0-only
+AuthorName: Stephen Karl Larroque
+AuthorWebSite: https://github.com/LRQ3000/Noice-Fork
+WebSite: https://github.com/LRQ3000/Noice-Fork
+SourceCode: https://github.com/LRQ3000/Noice-Fork
+IssueTracker: https://github.com/LRQ3000/Noice-Fork/issues
+Changelog: https://github.com/LRQ3000/Noice-Fork/blob/main/docs/CHANGELOG.md
+
+AutoName: Noice-Fork
+
+RepoType: git
+Repo: https://github.com/LRQ3000/Noice-Fork.git
+
+Builds:
+  - versionName: 1.4.0
+    versionCode: 53
+    commit: REPLACE_WITH_PUBLISHED_COMMIT
+    subdir: app
+    gradle:
+      - free
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.4.0
+CurrentVersionCode: 53

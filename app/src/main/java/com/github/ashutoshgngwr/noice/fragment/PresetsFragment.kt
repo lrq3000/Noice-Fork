@@ -188,7 +188,7 @@ class PresetsFragment : Fragment() {
     }
 
     private fun showShareIntentSender() {
-      val uri = dataSet[bindingAdapterPosition].toUri().toString()
+      val uri = dataSet[bindingAdapterPosition].toForkUri().toString()
       ShareCompat.IntentBuilder(requireActivity())
         .setType("text/plain")
         .setChooserTitle(R.string.share)

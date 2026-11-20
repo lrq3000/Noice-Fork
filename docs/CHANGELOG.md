@@ -1,4 +1,19 @@
-# Changelog
+# Noice-Fork changelog
+
+## Unreleased
+
+- Updated onboarding, About, support links, and project documentation for Noice-Fork.
+- New preset links use the fork’s GitHub project; legacy V1 recipes remain importable.
+- Prepared a draft F-Droid submission and an unsigned free release build.
+
+## v1.4.0
+
+- Established the standalone fork from Noice v1.3.3 with a redistribution-audited soundbank and the Womb Simulator preset.
+- Added offline preset import and a [GitHub Actions debug APK build](https://github.com/LRQ3000/Noice-Fork/actions/workflows/debug-apk.yml).
+
+## Historical upstream Noice changelog
+
+The entries and links below refer to the original Noice project, not to Noice-Fork.
 
 All notable changes to this project will be documented in this file.
 

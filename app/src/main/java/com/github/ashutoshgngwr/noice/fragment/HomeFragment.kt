@@ -146,17 +146,12 @@ class HomeFragment : Fragment(), Navigable {
 
     when (item.itemId) {
       R.id.report_issue -> {
-        var url = getString(R.string.app_issues_github_url)
-        if (!BuildConfig.IS_FREE_BUILD) {
-          url = getString(R.string.app_issues_form_url)
-        }
-
-        Uri.parse(url).launchInCustomTab(requireContext())
+        Uri.parse(getString(R.string.app_issues_github_url)).launchInCustomTab(requireContext())
         app.analyticsProvider.logEvent("issue_tracker_open", bundleOf())
       }
 
       R.id.submit_feedback -> {
-        Uri.parse(getString(R.string.feedback_form_url)).launchInCustomTab(requireContext())
+        Uri.parse(getString(R.string.app_issues_github_url)).launchInCustomTab(requireContext())
         app.analyticsProvider.logEvent("feedback_form_open", bundleOf())
       }
 

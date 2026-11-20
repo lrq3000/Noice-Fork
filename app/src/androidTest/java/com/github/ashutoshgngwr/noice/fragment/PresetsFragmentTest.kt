@@ -139,7 +139,7 @@ class PresetsFragmentTest {
   @Test
   fun testRecyclerViewItem_shareOption() {
     val presetUri = "test-preset-uri"
-    every { mockPreset.toUri() } returns Uri.parse(presetUri)
+    every { mockPreset.toForkUri() } returns Uri.parse(presetUri)
 
     // open context menu
     onView(withId(R.id.list)).perform(

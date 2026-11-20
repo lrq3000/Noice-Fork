@@ -27,6 +27,8 @@ class Preset(
     private const val URI_SCHEME = "https"
     private const val URI_AUTHORITY = "ashutoshgngwr.github.io"
     private const val URI_PATH = "/noice/preset"
+    private const val FORK_URI_HOST = "github.com"
+    private const val FORK_URI_PATH = "/LRQ3000/Noice-Fork/blob/main/docs/PRESETS.md"
     internal const val URI_NAME_PARAM = "name"
     internal const val URI_PLAYER_STATES_PARAM = "playerStates"
     private val jsonElementAdapter = Gson().getAdapter(JsonElement::class.java)
@@ -64,13 +66,21 @@ class Preset(
     fun fromSharedLink(text: String): Preset {
       require(text.length <= 16_384)
       val uri = Uri.parse(text.trim())
+      // Put user-created names and recipes in the fragment so browsers do not send them to GitHub.
+      val recipe = if (uri.scheme == URI_SCHEME && uri.encodedAuthority == FORK_URI_HOST &&
+        uri.encodedPath == FORK_URI_PATH && uri.encodedQuery == null) {
+        val fragment = uri.encodedFragment.orEmpty()
+        require(fragment.startsWith("preset?"))
+        Uri.parse("noice://preset?${fragment.removePrefix("preset?")}")
+      } else uri
       require(
+        recipe !== uri ||
         (uri.scheme == URI_SCHEME && uri.encodedAuthority == URI_AUTHORITY && uri.encodedPath == URI_PATH) ||
           (uri.scheme == "noice" && uri.encodedAuthority == "preset" && uri.encodedPath.isNullOrEmpty())
       )
-      val name = uri.getQueryParameters(URI_NAME_PARAM).also { require(it.size <= 1) }.firstOrNull().orEmpty()
-      require(name.length <= 150)
-      val payload = uri.getQueryParameters(URI_PLAYER_STATES_PARAM).singleOrNull()
+      val name = recipe.getQueryParameters(URI_NAME_PARAM).also { require(it.size <= 1) }.firstOrNull().orEmpty()
+      // The total URI length is bounded above; do not reject names the app already lets users save.
+      val payload = recipe.getQueryParameters(URI_PLAYER_STATES_PARAM).singleOrNull()
         ?: throw IllegalArgumentException("Expected one playerStates query parameter")
       val parsed = try {
         // Gson's convenience parser accepts malformed JSON such as unquoted field names.
@@ -132,6 +142,13 @@ class Preset(
   /**
    * Encodes the preset to an [Uri] with [name] and [playerStates] as query its parameters.
    */
+  fun toForkUri(): Uri = Uri.Builder()
+    .scheme(URI_SCHEME)
+    .authority(FORK_URI_HOST)
+    .path(FORK_URI_PATH)
+    .encodedFragment("preset?${toUri().encodedQuery}")
+    .build()
+
   fun toUri(): Uri {
     val gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
     return Uri.Builder()

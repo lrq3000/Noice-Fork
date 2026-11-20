@@ -69,32 +69,23 @@ defaults:
 ### Theme Configuration ###
 ############################
 
-page_title: Noice for Android
-goatcounter: https://ashutoshgngwr.goatcounter.com/count
-playstore_link: https://play.google.com/store/apps/details?id=com.github.ashutoshgngwr.noice
-fdroid_link: https://f-droid.org/packages/com.github.ashutoshgngwr.noice/
+page_title: Noice-Fork
 
 app_icon: /assets/app_icon.svg
-app_name: Noice for Android
+app_name: Noice-Fork
 app_price: Free
 app_description: Relax, improve focus and boost productivity with minimal background noise.
 
 enable_smart_app_banner: false
 
-your_name: Ashutosh Gangwar
-your_link: https://ashutoshgngwr.github.io
-your_city: Bengaluru, India
-email_address: ashutoshgngwr@gmail.com
-twitter_username: ashutoshgngwr
-github_username: ashutoshgngwr
+your_name: Stephen Karl Larroque
+your_link: https://github.com/LRQ3000/Noice-Fork
+github_username: LRQ3000
 
 features:
   - title: Hi-Fi sound library
     description: Ships with many recorded, high-fidelity sounds
     fontawesome_icon_class: fas fa-music
-  - title: Chromecast enabled
-    description: Play on other Chromecast-enabled devices such as TV, speakers, etc.
-    fontawesome_icon_class: fab fa-chromecast
   - title: Sleep timer
     description: Supports automatic shutdown after desired time duration
     fontawesome_icon_class: fas fa-bed

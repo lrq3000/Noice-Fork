@@ -1,36 +1,14 @@
 # Contributors
 
-## Code
+## Noice-Fork maintainer
 
-The following list is auto-generated from the Git history, and it is prone to
-duplicates.
+**Stephen Karl Larroque (@LRQ3000)** maintains [Noice-Fork](https://github.com/LRQ3000/Noice-Fork). For support and contributions, use the [fork issue tracker](https://github.com/LRQ3000/Noice-Fork/issues).
 
-{% assign authorsByLetter = site.data.authors.code | group_by_exp: "author", "author[0] | split: '' | first | upcase" -%}
-|   #   | Name |
-| :---: | ---- |
+## Original Noice
 
-{%- for letter in authorsByLetter %}
-{%- for author in letter.items %}
-| {%- if currentLetter != letter.name -%}{{ letter.name }}{%- endif -%}
-| [{{ author[0] | escape_once }}]({{ author[1] }}) |
-{%- assign currentLetter = letter.name -%}
-{%- endfor %}
-{%- endfor %}
+**Ashutosh Gangwar** created the original Noice. Its imaginative use of parallel short loops and its carefully curated soundbank made an unusually rich offline mixer.
 
-## Sounds
-
-| Attribution | Source |
-| :---------- | :----: |
-
-{%- for sound in site.data.authors.sounds %}
-| {{ sound.description | escape_once }} | [{{ sound.source | escape_once }}]({{ sound.url }}) |
-{%- endfor %}
-
-## Icons
-
-| Attribution | Source |
-| :---------- | :----: |
-
-{%- for icon in site.data.authors.icons %}
-| {{ icon.description | escape_once }} | [{{ icon.source | escape_once }}]({{ icon.url }}) |
-{%- endfor %}
+- [Original code and translation contributors](_data/authors/code.yaml)
+- [Original icon contributors](_data/authors/icons.yaml)
+- [Historical upstream sound credits](_data/authors/sounds.yaml)
+- [Credits and licenses for the clips Noice-Fork actually ships](audio-sources.json)

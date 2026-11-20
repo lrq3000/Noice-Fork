@@ -23,8 +23,8 @@ class AboutFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     return AboutPage(context).run {
-      setImage(R.drawable.app_banner)
-      setDescription(getString(R.string.app_description))
+      setImage(R.drawable.ic_launcher_24dp)
+      setDescription("${getString(R.string.app_name)}\n\n${getString(R.string.fork_about_description)}")
       addItem(
         buildElement(
           R.drawable.ic_about_version,
@@ -49,32 +49,6 @@ class AboutFragment : Fragment() {
         )
       )
 
-      if (NoiceApplication.of(requireContext()).isGoogleMobileServicesAvailable()) {
-        addItem(
-          buildElement(
-            R.drawable.about_icon_google_play,
-            R.string.about_play_store,
-            R.string.play_store_url,
-          )
-        )
-      }
-
-      addItem(
-        buildElement(
-          R.drawable.about_icon_instagram,
-          R.string.about_instagram,
-          R.string.app_instagram_url
-        )
-      )
-
-      addItem(
-        buildElement(
-          R.drawable.about_icon_twitter,
-          R.string.about_twitter,
-          R.string.app_twitter_url
-        )
-      )
-
       addItem(
         buildElement(
           R.drawable.about_icon_github,
@@ -86,13 +60,15 @@ class AboutFragment : Fragment() {
       addItem(
         buildElement(
           R.drawable.about_icon_link,
-          R.string.about_website,
-          R.string.app_website_url
+          R.string.fork_privacy,
+          R.string.app_privacy_url
         )
       )
 
-      addGroup(getString(R.string.created_by))
-      addTwitter(creatorTwitter, creatorTwitter)
+      addGroup(getString(R.string.fork_maintainer_label))
+      addItem(buildElement(R.drawable.ic_about_group, R.string.fork_maintainer_name, R.string.app_authors_url))
+      addGroup(getString(R.string.fork_original_creator_label))
+      addItem(buildElement(R.drawable.ic_about_group, R.string.fork_original_creator_name, R.string.app_authors_url))
       create()
     }
   }
@@ -117,7 +93,4 @@ class AboutFragment : Fragment() {
       .setOnClickListener { Uri.parse(url).launchInCustomTab(requireContext()) }
   }
 
-  companion object {
-    private const val creatorTwitter = "ashutoshgngwr"
-  }
 }
