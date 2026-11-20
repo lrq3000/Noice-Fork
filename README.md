@@ -1,12 +1,12 @@
 # Noice-Fork
 
-Noice-Fork is an independent, offline-first ambient sound mixer for Android based on [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). Mix sounds at independent volume levels, save them as presets, and share the recipes. The soundbank is included in the app, so playback does not require an account, a subscription, or a network connection. [Stephen Karl Larroque (@LRQ3000)](docs/CONTRIBUTORS.md) maintains the fork.
+Noice-Fork is an independent, offline-first ambient sound mixer for Android. Mix sounds at independent volume levels, save them as presets, and share the recipes. The soundbank is included in the app, so playback does not require an account, a subscription, or a network connection. [Stephen Karl Larroque (@LRQ3000)](docs/CONTRIBUTORS.md) maintains the fork.
 
 ## Why fork Noice V1?
 
-Noice V1 could play two short samples of different lengths together. The individual loops repeat, but their starts do not usually line up again until much later. Without conspicuous sounds that mark a loop boundary, the mixture can feel like one much longer recording. That is a perceptual effect, not a claim that the samples never repeat. This technique lets a phone carry a varied sound library while using much less storage than a library of long recordings.
+Noice V1 could play two short samples of different lengths together. The individual loops repeat, but their starts do not usually line up again until much later. This dual-sample approach creates the auditory illusion of an ambient sound that sounds much longer than it actually is. This technique lets a phone carry a varied sound library that do not feel repetitive while using much less storage than a library of long recordings.
 
-[Noice V2](https://trynoice.com/news/v2-announcement) chose a different design: longer, more varied recordings delivered over the Internet, with full offline playback offered as a premium feature. Streaming makes it easier to expand the library, but depends on the delivery service and can incur recurring bandwidth costs; a bundled soundbank can keep working even when the original service no longer runs. This fork narrows the scope to reliable offline playback and community presets. It does not maintain V2.
+[Noice V2](https://trynoice.com/news/v2-announcement) chose a different design: longer, more varied recordings delivered over the Internet, with full offline playback offered as a premium feature. Streaming makes it easier to expand the library, but depends on the delivery service and can incur recurring bandwidth costs; a bundled soundbank can keep working even when the original service no longer runs. This fork narrows the scope to reliable offline playback and community presets, based on [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). It does not maintain V2.
 
 ## Womb Simulator by @LRQ3000
 
