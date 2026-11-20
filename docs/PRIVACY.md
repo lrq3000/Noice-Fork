@@ -1,6 +1,6 @@
 # Noice-Fork privacy policy
 
-The supported Noice-Fork Android build does not request Internet access or include analytics, crash reporting, advertising, or an account system. The bundled audio plays locally. Your presets and settings are stored on the device.
+The supported Noice-Fork Android build does not request Internet access or include analytics, crash reporting, advertising, or an account system. The bundled audio plays locally. Your presets and settings are stored on the device. If Android backup is enabled, Android may back up this app data under your system backup settings; Noice-Fork does not operate a backup service.
 
 When you export presets or share a link, you choose the destination using Android. A preset link contains its name and mix settings, not recordings or your account details. Anyone you send the link to can read those settings. Noice-Fork does not send the recipe to a server.
 
