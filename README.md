@@ -12,7 +12,7 @@
 
 ## Features
 
-- 🔁 **Dual-sampling engine.** A signature feature of Noice V1 and Noice-Fork. For sounds such as Bonfire, the engine plays two short recordings of deliberately different lengths instead of looping a single track. The layers restart at different times, so the combined pattern takes longer to repeat and can sound less repetitive without a long recording.
+- 🔁 **Dual-sampling engine.** A signature feature of Noice V1 and Noice-Fork. For sounds such as Bonfire, the engine plays two short recordings of deliberately different lengths instead of looping a single track. The layers restart at different times, so the combined pattern takes longer to repeat and sounds much longer than it is while staying lightweight so that the audio files can stay bundled with the app.
 - 🎚️ **Build your own soundscape.** Play several sounds at once and set each sound’s volume independently. Set how long occasional sounds like thunder can go between repeats.
 - ⭐ **Start with a preset.** Try Thunderstorm, Beach, Camping, or [Womb Simulator](#womb-simulator) (to soothe the tiniest, loudest roommate). Generate a random mix by mood and intensity, or save your own.
 - ⏱️ **Set a timer.** Stop playback after a set duration with **Sleep Timer**, or use **Wake-up Timer** to start a saved mix at a chosen time.
