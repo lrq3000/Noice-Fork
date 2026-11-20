@@ -8,7 +8,7 @@
 
 **Audio:** Keep the scheduling, dual-sampling, original sound keys, and the six-layer v1 recipe unchanged. Record license/source and hash for every shipped clip. Do not include blobs with unclear rights in any public commit or artifact. A mismatched or unavailable replacement for a preset layer must be disclosed and addressed before publication.
 
-**Distribution:** Build the FOSS `free` debug APK on every push to `main` and upload it as an Actions artifact. No Google service account, release signing, streaming service, new hosting, force-push, or signed release. Explain debug signing differences between runs. Keep LGPL/GPL and other upstream notices and record separately licensed media.
+**Distribution:** Build the FOSS `free` debug APK on every push to `main` and upload it as an Actions artifact. No Google service account, release signing, streaming service, new hosting, force-push, or signed release. Explain debug signing differences between runs. Keep GPL and other upstream notices and record separately licensed media.
 
 **README:** Credit Noice and the audio sources. Explain v1 dual sampling as a way for two short parallel loops to have a longer joint repetition period, and v2 streaming as a different design with ongoing delivery costs and premium offline playback, without attributing project inactivity to an unproven cause. Link the preset discussion, distinguish spectral/rhythm/masking hypotheses from evidence, and explain safe low-volume, distant, time-limited use with AAP guidance. Welcome community presets and maintenance contributions.
 

@@ -1,0 +1,33 @@
+name: Debug APK
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: gradle
+      - name: Install the Android SDK used by v1.3.3
+        run: JAVA_HOME="$JAVA_HOME_17_X64" sdkmanager 'platforms;android-30' 'build-tools;30.0.2'
+      - name: Test and build the offline variant
+        run: bash ./gradlew --no-daemon :app:testFreeDebugUnitTest :app:assembleFreeDebug
+      - name: Verify the bundled soundbank
+        run: python3 scripts/verify_audio.py --apk app/build/outputs/apk/free/debug/app-free-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Noice-Fork-debug
+          path: app/build/outputs/apk/free/debug/app-free-debug.apk
+          if-no-files-found: error

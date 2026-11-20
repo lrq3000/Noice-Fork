@@ -1,0 +1,338 @@
+{
+  "airplane_inflight.mp3": {
+    "author": "digifishmusic",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-4.0",
+    "sha256": "171d08fbc97bd3311faa0e01e4da4e3585a3fb89138b84a3d9a55155ad02e1b4",
+    "source": "https://freesound.org/s/47254/"
+  },
+  "airplane_seatbelt_beeps.mp3": {
+    "author": "nachosose",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "40514bab4db7e0f5504dd3a18cd9146eb4feb9820a6eb35c8b8077fafa1cf03a",
+    "source": "https://freesound.org/s/244583/"
+  },
+  "birds_0.mp3": {
+    "author": "hargissssound",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "f7c1ed9d658e8a0cd65deab540fe299bd873df34ad7ec6b7205379e2a5c1ebb3",
+    "source": "https://freesound.org/s/471891/"
+  },
+  "birds_1.mp3": {
+    "author": "Kyster (Noice segment edit)",
+    "edits": "Replacement; excerpt from 20s for 23s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "3fbf0f1404dcdb23c5419632daaea559aeb83fc10960f73facce506dfc906771",
+    "source": "https://freesound.org/s/120905/"
+  },
+  "bonfire_0.mp3": {
+    "author": "ezwa",
+    "edits": "Replacement; excerpt from 0s for 17s, short edge fades and MP3 encoding.",
+    "license": "Public Domain",
+    "sha256": "177f235bd2ac2ee1819a08bbb2326896ffcaa362fa3610982a085064c48e31a6",
+    "source": "https://soundbible.com/1543-Fireplace.html"
+  },
+  "bonfire_1.mp3": {
+    "author": "ezwa",
+    "edits": "Replacement; excerpt from 10s for 15.54s, short edge fades and MP3 encoding.",
+    "license": "Public Domain",
+    "sha256": "dd53a992883ebed1f6edf86bc9446f8f90455b07ab84dad3936eacdef32b705f",
+    "source": "https://soundbible.com/1543-Fireplace.html"
+  },
+  "brownian_noise.mp3": {
+    "author": "georgedyer",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "62c851fbdeaf91826b71898b87168a185e77330cef7e4788f45e6089bd833cf3",
+    "source": "https://freesound.org/s/171552/"
+  },
+  "coffee_shop_0.mp3": {
+    "author": "stephan",
+    "edits": "Replacement; excerpt from 0s for 16.66s, short edge fades and MP3 encoding.",
+    "license": "Public Domain",
+    "sha256": "61c278a96c2582b699c783b06d29045c9437e352932c27dc97d18f67adedf7d3",
+    "source": "https://soundbible.com/1664-Restaurant-Ambiance.html"
+  },
+  "coffee_shop_1.mp3": {
+    "author": "stephan",
+    "edits": "Replacement; excerpt from 6s for 10.66s, short edge fades and MP3 encoding.",
+    "license": "Public Domain",
+    "sha256": "353c455acb32992bb998d1260a7afbc96c56bb8fc3092cc7541a1e5760d027c8",
+    "source": "https://soundbible.com/1664-Restaurant-Ambiance.html"
+  },
+  "creaking_ship_0.mp3": {
+    "author": "Falcet (edited for Blanket by Porrumentzio)",
+    "edits": "Replacement; excerpt from 0s for 17s, short edge fades and MP3 encoding.",
+    "license": "CC0-1.0",
+    "sha256": "97a261798e630f62dfe6edc6b3f4a49a37048f31254092cffacd120d86a0d92e",
+    "source": "https://freesound.org/s/439365/"
+  },
+  "creaking_ship_1.mp3": {
+    "author": "DBlover",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "164f26936f236aceffd35b70c6977ed88f5a2677b543619b92a3fdb60356a552",
+    "source": "https://freesound.org/s/478667/"
+  },
+  "crickets.mp3": {
+    "author": "Lisa Redfern",
+    "edits": "Replacement; excerpt from 0s for 21s, short edge fades and MP3 encoding.",
+    "license": "Public Domain",
+    "sha256": "397e1edd65681579c61a270225053f6dab1cb8e0f63148dd418a5ab3f8591125",
+    "source": "https://soundbible.com/2083-Crickets-Chirping-At-Night.html"
+  },
+  "distant_thunder.mp3": {
+    "author": "Mike Koenig",
+    "edits": "Replacement; excerpt from 0s for 12s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "a8960ee7de72596e44c6b6faa1513793a4a318cf454253416d63475e654770e2",
+    "source": "https://soundbible.com/907-Distant-Thunder.html"
+  },
+  "electric_car_0.mp3": {
+    "author": "jakobthiesen",
+    "edits": "Replacement; excerpt from 1s for 17s, short edge fades and MP3 encoding. Low-pass filtered at 750 Hz. Applied 14 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC-BY-3.0",
+    "sha256": "24e31c930b3cd71db134436546ec804d0e91f47c476290f5ead3849f92473ae6",
+    "source": "https://freesound.org/s/174845/"
+  },
+  "electric_car_1.mp3": {
+    "author": "jakobthiesen",
+    "edits": "Replacement; excerpt from 20s for 23s, short edge fades and MP3 encoding. Low-pass filtered at 750 Hz. Applied 14 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC-BY-3.0",
+    "sha256": "b64d4a8d82a3516bbaa0925cdaa2c8c9b6303e3e3ccaa35317d608096ae65730",
+    "source": "https://freesound.org/s/174845/"
+  },
+  "heavy_rain.mp3": {
+    "author": "Daniel Simion",
+    "edits": "Replacement; excerpt from 0s for 33s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "cca50524572e1c7721a14b290958c51789366a77e1c833ed2d47978f354facf1",
+    "source": "https://soundbible.com/2217-Heavy-Rain-Wind.html"
+  },
+  "howling_wolf.mp3": {
+    "author": "betchkal",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "21287ea6d34565fc6187d56f5cc71476d827350d5f314bb3b75792577af30a4b",
+    "source": "https://freesound.org/s/500646/"
+  },
+  "human_heartbeat.mp3": {
+    "author": "RSilveira_88",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-4.0",
+    "sha256": "fe8584736f62499a7a3f9aec534ca107952008b8ef1ee8696f468abd465f08d3",
+    "source": "https://freesound.org/s/216219/"
+  },
+  "light_rain.mp3": {
+    "author": "Mark DiAngelo",
+    "edits": "Replacement; excerpt from 0s for 19.46s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "10e6e289bb824df38b7bc040b533cdc69dacfa243240cc097db4e6b6ca4f2d35",
+    "source": "https://soundbible.com/2065-Rain-Inside-House.html"
+  },
+  "moderate_rain.mp3": {
+    "author": "idomusics",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "f15880cde582f9b09b270a4abc27bd6150fea2f861aec7bf026c24001914cdf1",
+    "source": "https://freesound.org/s/518863/"
+  },
+  "morning_in_a_village.mp3": {
+    "author": "klankbeeld (Noice segment edit)",
+    "edits": "Replacement; excerpt from 1s for 31s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "7442929b24cabbaf5f1571c8ffa30c71ffaab439d010bec49ededdbc880e67f2",
+    "source": "https://freesound.org/s/170930/"
+  },
+  "moving_train.mp3": {
+    "author": "YOH",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-4.0",
+    "sha256": "2846ddbe3401bc5a0bc19cad21aa71f71e6496974f8b6b1b795b7568db39395e",
+    "source": "https://freesound.org/s/170866/"
+  },
+  "night_0.mp3": {
+    "author": "jaime_enrique",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "aea9cf757ce9b32b4beb9d17a5b89235e840b887dc27fd7d8246dd4b3ad3fc97",
+    "source": "https://freesound.org/s/424763/"
+  },
+  "night_1.mp3": {
+    "author": "jaime_enrique",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "ea82b7493042a940b47a78134122efb9cfad00a27cd31864104f7e9fe6fe3648",
+    "source": "https://freesound.org/s/424763/"
+  },
+  "office_0.mp3": {
+    "author": "qubodup (Noice segment edit)",
+    "edits": "Replacement; excerpt from 1s for 17s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "cf4cac9e287d4ee9e73112893a8c57d4658c45ad38fa183fa06457c6e95b73cc",
+    "source": "https://freesound.org/s/211945/"
+  },
+  "office_1.mp3": {
+    "author": "qubodup (Noice segment edit)",
+    "edits": "Replacement; excerpt from 20s for 23s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "f3c770b3f5f753e029d9d4bec7c3fbe1399793478cf42564a826c1a98fb290dc",
+    "source": "https://freesound.org/s/211945/"
+  },
+  "pink_noise.mp3": {
+    "author": "Noice-Fork contributors",
+    "edits": "New seeded synthesis: anoisesrc=color=pink:amplitude=0.16:seed=2183:sample_rate=44100:duration=37.",
+    "license": "CC0-1.0",
+    "sha256": "e7d48b85833a4dfa8ef9f4efd1a0540ba1311ff3b4aa3eb09f6ca7c742f618f0",
+    "source": "scripts/prepare_audio.py"
+  },
+  "public_library_0.mp3": {
+    "author": "xkeril",
+    "edits": "Replacement; excerpt from 2s for 29s, short edge fades and MP3 encoding.",
+    "license": "CC0-1.0",
+    "sha256": "a1d1b8e2f1135d571d22adc01f8b4de94030fe50bee8e3130d3ee27740e9ba42",
+    "source": "https://freesound.org/s/620683/"
+  },
+  "public_library_1.mp3": {
+    "author": "launemax",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "51293e6ad4d09118f9f0b3c623722fae401bdece9d49b23d5c42210431527129",
+    "source": "https://freesound.org/s/250017/"
+  },
+  "purring_cat.mp3": {
+    "author": "nebulousflynn",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-3.0",
+    "sha256": "a7701cc415b3487ee8162dcef270d812b2550765f6639ce9956432633ec5d9af",
+    "source": "https://freesound.org/s/332274/"
+  },
+  "quiet_conversation_0.mp3": {
+    "author": "tfsound",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "eb531febb59d13dfbdfcd9a8dfcfcbd0bccaeb50cd0335b4cc268639618962b4",
+    "source": "https://freesound.org/s/82171/"
+  },
+  "quiet_conversation_1.mp3": {
+    "author": "tfsound",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "1514ea1d178305dbdf517470675f62a96ece38dc0316ddaea401a0e04b895bc8",
+    "source": "https://freesound.org/s/82171/"
+  },
+  "rolling_thunder.mp3": {
+    "author": "straget (Noice segment edit)",
+    "edits": "Replacement; excerpt from 0s for 15s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "bcbd3c26a6208927429df2f8d8e38327e3b3ee96ef65cabe2193a710fa507caa",
+    "source": "https://freesound.org/s/529535/"
+  },
+  "screeching_seagulls.mp3": {
+    "author": "beejeeb1314 (Noice segment edit)",
+    "edits": "Replacement; excerpt from 0s for 6s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "d1dcc7dd920effbe10c920c57e968bd6c5d0b6c87f662dc699917d2b2312f794",
+    "source": "https://freesound.org/s/197743/"
+  },
+  "seaside.mp3": {
+    "author": "Luftrum (edited for Blanket by Porrumentzio)",
+    "edits": "Replacement; excerpt from 0s for 33s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "3e5fbf2e968e0faa1b7e168a4bb990a34a9aa51478999809ff515e5cce2a8d41",
+    "source": "https://freesound.org/s/48412/"
+  },
+  "soft_wind_0.mp3": {
+    "author": "F\u00e9lix Blume (edited for Blanket by Porrumentzio)",
+    "edits": "Replacement; excerpt from 0s for 9s, short edge fades and MP3 encoding. Low-pass filtered at 1400 Hz. Applied 5 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC0-1.0",
+    "sha256": "6b77278989c368f83b06640baf7679316d990f602984d6e89605e0321a827b45",
+    "source": "https://freesound.org/s/217506/"
+  },
+  "soft_wind_1.mp3": {
+    "author": "F\u00e9lix Blume (edited for Blanket by Porrumentzio)",
+    "edits": "Replacement; excerpt from 5s for 9.84s, short edge fades and MP3 encoding. Low-pass filtered at 1400 Hz. Applied 5 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC0-1.0",
+    "sha256": "897b1cfc125468fa5a9de5d9c8b47483be5cc6781c3926111a631bbc395d2522",
+    "source": "https://freesound.org/s/217506/"
+  },
+  "thunder_crack.mp3": {
+    "author": "Taira Komori",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-4.0",
+    "sha256": "741341ccc9a4ec49171dc38e7614ab7e11dec41724ce3575d9c2ce6ff0171150",
+    "source": "https://freesound.org/s/213015/"
+  },
+  "train_horn.mp3": {
+    "author": "CouleurCasquette",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC-BY-3.0",
+    "sha256": "baa449cefc79906f78a6c0a2828a1504479d1b17bdd17d52b62158b6065aa8d6",
+    "source": "https://freesound.org/s/248229/"
+  },
+  "walking_through_the_snow.mp3": {
+    "author": "Mike Koenig",
+    "edits": "Replacement; excerpt from 0s for 8.52s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-3.0",
+    "sha256": "d2035036ac0719839f253fe13f039a290beaf61105ee0d458f52b6142526f4c2",
+    "source": "https://soundbible.com/660-Walking-In-Snow.html"
+  },
+  "water_hose_0.mp3": {
+    "author": "DrinkingPeter",
+    "edits": "Replacement; excerpt from 0s for 17s, short edge fades and MP3 encoding.",
+    "license": "CC0-1.0",
+    "sha256": "d53baa9d3904f7efdd6c888011b74247abdbf2476a16f0f46a7d2c90758c783c",
+    "source": "https://freesound.org/s/684884/"
+  },
+  "water_hose_1.mp3": {
+    "author": "DrinkingPeter",
+    "edits": "Replacement; excerpt from 4s for 13s, short edge fades and MP3 encoding.",
+    "license": "CC0-1.0",
+    "sha256": "66883f249c52f34849932ec169b7c7cbbf1c3642c060e9fbe63d3bfdb2e4d3b7",
+    "source": "https://freesound.org/s/684884/"
+  },
+  "water_stream_0.mp3": {
+    "author": "BurghRecords",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "b5828b0122ce7964309165566e50a974a872a1ade154066692075cb8a9aed7f4",
+    "source": "https://freesound.org/s/415151/"
+  },
+  "water_stream_1.mp3": {
+    "author": "BurghRecords",
+    "edits": "Unchanged from the Noice v1.3.3 bundle; upstream shortened/edited the licensed source.",
+    "license": "CC0-1.0",
+    "sha256": "899b7bc9c8540960e88a197e23264dabb020abe8e70b8903e9c22134314eae9b",
+    "source": "https://freesound.org/s/415151/"
+  },
+  "white_noise.mp3": {
+    "author": "Noice-Fork contributors",
+    "edits": "New seeded synthesis: anoisesrc=color=white:amplitude=0.16:seed=1709:sample_rate=44100:duration=37.",
+    "license": "CC0-1.0",
+    "sha256": "dc05325275a55f04066416d29bf5f20d7c1adaf2e3ceea07306230811f311000",
+    "source": "scripts/prepare_audio.py"
+  },
+  "wind_chimes_of_shells.mp3": {
+    "author": "Martineerok",
+    "edits": "Replacement; excerpt from 0s for 37s, short edge fades and MP3 encoding.",
+    "license": "CC-BY-4.0",
+    "sha256": "03fe6c119b2ace62ade348611866201523e5e33a551e6e15c4f52b72dc0c0886",
+    "source": "https://freesound.org/s/329858/"
+  },
+  "wind_in_palm_trees_0.mp3": {
+    "author": "StrangeAcoustics (Noice segment edit)",
+    "edits": "Replacement; excerpt from 1s for 17s, short edge fades and MP3 encoding. Low-pass filtered at 1700 Hz. Applied 10 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC-BY-4.0",
+    "sha256": "2832b773eadfe1fedee0a699ccc06ee3e442cf05630d78f6c4900e96cac0e22f",
+    "source": "https://freesound.org/s/346106/"
+  },
+  "wind_in_palm_trees_1.mp3": {
+    "author": "StrangeAcoustics (Noice segment edit)",
+    "edits": "Replacement; excerpt from 20s for 23s, short edge fades and MP3 encoding. Low-pass filtered at 1700 Hz. Applied 10 dB digital gain and a \u22126 dBFS peak limiter to compensate for quiet source recordings.",
+    "license": "CC-BY-4.0",
+    "sha256": "ced30e123091e03fd45e12bb09fa500e6b14f1142c57cc18cd360e577f45e137",
+    "source": "https://freesound.org/s/346106/"
+  }
+}
