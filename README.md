@@ -19,12 +19,6 @@
 - 🎧 **Listen in the background.** Control playback from the Android media notification. Add preset shortcuts on supported launchers.
 - 🔗 **Share or back up your mixes.** Send a link containing the recipe, not the recordings, or export your preset collection to a file. Noice V1 preset links are still importable.
 
-### How dual sampling works
-
-In an idealized example, two 40- and 45-second loops that start together line up again after six minutes. Each recording still repeats, but it overlaps with a different part of the other recording each time it restarts, until the loops line up again. That is the idea behind the [original dual-sampling proposal](https://github.com/trynoice/android-app/issues/62).
-
-The perceptual effect is **less noticeable repetition in an auditory texture**. In [listening experiments on repeated sound textures](https://doi.org/10.1016/j.cognition.2025.106350), repetition was generally harder to detect as the repeating segment got longer. The study did not test Noice or establish that its repeats go unnoticed.
-
 ## Screenshots
 
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01-library.png" alt="Sound Library with two layers playing and independent volume controls" width="230"> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02-presets.png" alt="Presets screen showing the four built-in mixes and the Import preset link button" width="230"> <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03-wake-up-timer.png" alt="Wake-up Timer screen with a saved preset selected and a time picker" width="230">
@@ -48,7 +42,15 @@ The current release APK is debug-signed and is not distributed through Google Pl
 3. **Set a timer:** open **Sleep Timer** and add time to stop playback after a delay. To start playback at a specific time, open **Wake-up Timer**, choose a preset and time, then tap **Schedule**.
 4. **Send or import a mix:** in **Presets**, open the mix’s menu and choose **Share**. To use a shared mix, copy the entire link, including any `#` fragment, then open **Presets → Import preset link** and paste it. See the [preset guide](docs/PRESETS.md).
 
-## Womb Simulator
+## The Tech
+
+### How dual sampling works
+
+In an idealized example, two 40- and 45-second loops that start together line up again after six minutes. Each recording still repeats, but it overlaps with a different part of the other recording each time it restarts, until the loops line up again. That is the idea behind the [original dual-sampling proposal](https://github.com/trynoice/android-app/issues/62).
+
+The perceptual effect is **less noticeable repetition in an auditory texture**. In [listening experiments on repeated sound textures](https://doi.org/10.1016/j.cognition.2025.106350), repetition was generally harder to detect as the repeating segment got longer.
+
+### Womb Simulator
 
 This built-in preset follows [@LRQ3000’s original six-layer recipe for Noice V1](https://github.com/trynoice/android-app/issues/1055). Brown noise, soft wind, wind in palm trees, a water stream, and the hum of an electric car create a low, steady backdrop. The moving train adds a heartbeat-like rhythm. The idea is that the steady background may make sudden household noises less noticeable. This is a designed soundscape, not a recording from inside the womb or a proven infant sleep aid.
 
@@ -60,15 +62,13 @@ This built-in preset follows [@LRQ3000’s original six-layer recipe for Noice V
 
 The app does not request Internet access and includes no ads or analytics. Presets and settings are stored on the device; Android may back them up according to your system settings. See the [privacy policy](docs/PRIVACY.md).
 
-## About the fork
-
-Noice-Fork independently maintains the offline mixer and [dual-sampling engine](#how-dual-sampling-works) from [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). [Noice V2](https://trynoice.com/news/v2-announcement) took a different approach with longer, streamed recordings; this fork does not maintain V2.
-
 ## Authorship
 
 - **Original Noice:** [Ashutosh Gangwar (@ashutoshgngwr)](https://github.com/ashutoshgngwr) and the [original Noice contributors](docs/CONTRIBUTORS.md).
 - **Fork maintainer:** [Stephen Karl Larroque (@LRQ3000)](https://github.com/LRQ3000).
 - **Built-in presets:** Thunderstorm by [@markwmuller](https://github.com/markwmuller), Beach by [@eMPee584](https://github.com/eMPee584), Camping by [@ashutoshgngwr](https://github.com/ashutoshgngwr), and [Womb Simulator](https://github.com/trynoice/android-app/issues/1055) by [@LRQ3000](https://github.com/LRQ3000).
+
+Noice-Fork started to maintain the offline mixer and [dual-sampling engine](#how-dual-sampling-works) from [Noice v1.3.3](https://github.com/trynoice/android-app/releases/tag/1.3.3). [Noice V2](https://trynoice.com/news/v2-announcement) took a different approach with longer, streamed recordings; this fork does not maintain V2.
 
 ## License
 
