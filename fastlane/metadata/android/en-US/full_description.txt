@@ -1,0 +1,5 @@
+Noice-Fork is an offline ambient sound mixer for Android. Combine nature sounds, environmental recordings, and white, pink, or brown noise. Adjust each sound independently and save your mix as a preset. The soundbank is included; playback needs no connection, account, or subscription.
+
+Share a preset as a link that carries its mix settings. Import it offline, use a sleep timer, or try the built-in community presets. The project preserves the dual-sample playback engine of the original Noice V1, created by Ashutosh Gangwar, and is maintained independently by Stephen Karl Larroque.
+
+Noice-Fork does not request Internet access and contains no ads, analytics, or crash-reporting service.

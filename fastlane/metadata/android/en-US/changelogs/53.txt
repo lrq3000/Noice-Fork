@@ -1,0 +1,1 @@
+Initial Noice-Fork listing: offline bundled sounds, the Womb Simulator preset, and shareable recipes with offline import. Updated onboarding and project links distinguish the fork from the original app.
