@@ -13,7 +13,7 @@
 ## Features
 
 - 🎚️ **Build your own soundscape.** Play several sounds at once and set each sound’s volume independently. Set how long occasional sounds like thunder can go between repeats.
-- ⭐ **Start with a preset.** Try Thunderstorm, Beach, Camping, or Womb Simulator, generate a random mix by mood and intensity, or save your own.
+- ⭐ **Start with a preset.** Try Thunderstorm, Beach, Camping, or [Womb Simulator](#womb-simulator) (to soothe the tiniest, loudest roommate). Generate a random mix by mood and intensity, or save your own.
 - ⏱️ **Set a timer.** Stop playback after a set duration with **Sleep Timer**, or use **Wake-up Timer** to start a saved mix at a chosen time.
 - 🎧 **Listen in the background.** Control playback from the Android media notification. Add preset shortcuts on supported launchers.
 - 🔗 **Share or back up your mixes.** Send a link containing the recipe, not the recordings, or export your preset collection to a file. Noice V1 preset links are still importable.
@@ -41,7 +41,13 @@ The current release APK is debug-signed and is not distributed through Google Pl
 3. **Set a timer:** open **Sleep Timer** and add time to stop playback after a delay. To start playback at a specific time, open **Wake-up Timer**, choose a preset and time, then tap **Schedule**.
 4. **Send or import a mix:** in **Presets**, open the mix’s menu and choose **Share**. To use a shared mix, copy the entire link, including any `#` fragment, then open **Presets → Import preset link** and paste it. See the [preset guide](docs/PRESETS.md).
 
-**About Womb Simulator:** This is a soundscape, not a womb recording or a proven infant sleep aid. If playing sounds near an infant, follow the [American Academy of Pediatrics’ hearing-safety guidance](https://www.aap.org/en/patient-care/environmental-health/promoting-healthy-environments-for-children/noise/): keep the device far away, use the lowest practical volume, and limit playback time. The app’s sliders are relative levels, not decibel measurements. See the [preset notes](docs/PRESETS.md#womb-simulator).
+## Womb Simulator
+
+This built-in preset follows [@LRQ3000’s original six-layer recipe for Noice V1](https://github.com/trynoice/android-app/issues/1055). Brown noise, soft wind, wind in palm trees, a water stream, and the hum of an electric car create a low, steady backdrop. The moving train adds a heartbeat-like rhythm. The idea is that the steady background may make sudden household noises less noticeable. This is a designed soundscape, not a recording from inside the womb or a proven infant sleep aid.
+
+**What the research found:** [Parga et al. (2018)](https://doi.org/10.1371/journal.pone.0197045) found that low frequencies predominated in recordings made with stethoscopes placed on pregnant participants’ abdomens. Those recordings do not directly measure what a fetus hears. In a [small randomized trial of 40 newborns](https://doi.org/10.1136/adc.65.1.135), 16 of 20 fell asleep within five minutes with white noise, compared with 5 of 20 without it. That trial did not test brown noise, the train rhythm, or this preset, and does not establish that the mix helps babies fall or stay asleep.
+
+**Hearing safety:** If playing sounds near an infant, follow the [American Academy of Pediatrics’ guidance](https://www.aap.org/en/patient-care/environmental-health/promoting-healthy-environments-for-children/noise/): keep the device as far from the infant as possible, use the lowest practical volume, and limit playback time. The app’s sliders show relative volume, not the sound level at the infant’s ear.
 
 ## Privacy
 
