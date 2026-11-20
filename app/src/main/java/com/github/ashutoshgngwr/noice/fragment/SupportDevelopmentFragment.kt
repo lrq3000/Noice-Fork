@@ -1,6 +1,7 @@
 package com.github.ashutoshgngwr.noice.fragment
 
 import android.os.Bundle
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.github.ashutoshgngwr.noice.NoiceApplication
 import com.github.ashutoshgngwr.noice.R
 import com.github.ashutoshgngwr.noice.databinding.SupportDevelopmentFragmentBinding
+import com.github.ashutoshgngwr.noice.ext.launchInCustomTab
 
 class SupportDevelopmentFragment : Fragment() {
 
@@ -27,16 +29,17 @@ class SupportDevelopmentFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     app = NoiceApplication.of(requireContext())
-    app.donateViewProvider.addViewToParent(binding.donateViewContainer)
+    binding.contributeButton.setOnClickListener {
+      Uri.parse(getString(R.string.app_contributing_url))
+        .launchInCustomTab(requireContext())
+    }
 
     binding.shareButton.setOnClickListener {
       val text = getString(R.string.app_description)
-      val playStoreURL = getString(R.string.play_store_url)
-      val fdroidURL = getString(R.string.fdroid_url)
       ShareCompat.IntentBuilder(requireActivity())
         .setChooserTitle(R.string.support_development__share)
         .setType("text/plain")
-        .setText("$text\n\n$playStoreURL\n$fdroidURL")
+        .setText("$text\n\n${getString(R.string.app_github_url)}")
         .startChooser()
 
       app.analyticsProvider.logEvent("share_app_with_friends", bundleOf())

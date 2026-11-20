@@ -15,6 +15,21 @@ import org.skyscreamer.jsonassert.JSONAssert
 class PresetTest {
 
   @Test
+  fun forkLinkSharesTheRecipeInTheFragmentAndImportsOffline() {
+    val states = arrayOf(Preset.PlayerState("brownian_noise", 21, 300))
+    val preset = Preset("test-id", "Wind & water #2", states)
+    val uri = preset.toForkUri()
+    assertEquals("github.com", uri.host)
+    assertEquals("/LRQ3000/Noice-Fork/blob/main/docs/PRESETS.md", uri.path)
+    assertEquals(null, uri.query)
+    assertEquals(preset.name, Preset.fromSharedLink(uri.toString()).name)
+    assertEquals(states.toList(), Preset.fromSharedLink(uri.toString()).playerStates.toList())
+    assertThrows(IllegalArgumentException::class.java) {
+      Preset.fromSharedLink(uri.toString().replace("/LRQ3000/", "/another-owner/"))
+    }
+  }
+
+  @Test
   fun sharedLinkRoundTripPreservesTheRecipe() {
     val states = arrayOf(Preset.PlayerState("brownian_noise", 25, 300))
     val link = Preset("old-id", "Offline mix", states).toUri().toString()

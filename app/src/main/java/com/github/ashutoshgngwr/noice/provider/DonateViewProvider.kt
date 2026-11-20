@@ -26,7 +26,7 @@ object OpenCollectiveDonateViewProvider : DonateViewProvider {
       .apply {
         parent.addView(this)
         setOnClickListener {
-          val url = it.context.getString(R.string.open_collective_url)
+          val url = it.context.getString(R.string.app_contributing_url)
           Uri.parse(url).launchInCustomTab(it.context)
         }
       }

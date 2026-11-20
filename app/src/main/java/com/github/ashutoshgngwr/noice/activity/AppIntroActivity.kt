@@ -51,9 +51,9 @@ class AppIntroActivity : AppIntro() {
     )
     addSlide(
       AppIntroFragment.newInstance(
-        title = getString(R.string.appintro__getting_started_title),
+        title = getString(R.string.fork_onboarding_name),
         description = "${getString(R.string.app_description)}\n\n${getString(R.string.appintro__getting_started_desc_0)}",
-        imageDrawable = R.drawable.app_banner,
+        imageDrawable = R.drawable.ic_launcher_24dp,
         titleColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
         descriptionColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
         backgroundColor = ActivityCompat.getColor(this, R.color.appintro_slide_0__background)
@@ -91,19 +91,9 @@ class AppIntroActivity : AppIntro() {
     )
     addSlide(
       AppIntroFragment.newInstance(
-        title = getString(R.string.appintro__chromecast_title),
-        description = getString(R.string.appintro__chromecast_desc),
-        imageDrawable = R.drawable.ic_appintro_chromecast,
-        titleColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
-        descriptionColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
-        backgroundColor = ActivityCompat.getColor(this, R.color.appintro_slide_4__background)
-      )
-    )
-    addSlide(
-      AppIntroFragment.newInstance(
         title = getString(R.string.appintro__getting_started_title),
         description = getString(R.string.appintro__getting_started_desc_1),
-        imageDrawable = R.drawable.app_banner,
+        imageDrawable = R.drawable.ic_launcher_24dp,
         titleColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
         descriptionColor = ActivityCompat.getColor(this, R.color.appintro__text_color),
         backgroundColor = ActivityCompat.getColor(this, R.color.appintro_slide_5__background)

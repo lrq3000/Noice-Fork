@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="import_preset_link">Import preset link</string>
-  <string name="preset_link_hint">Paste a Noice V1 preset link</string>
-  <string name="preset_link_invalid">This is not a valid Noice V1 preset link.</string>
+  <string name="preset_link_hint">Paste a Noice-Fork or Noice V1 preset link</string>
+  <string name="preset_link_invalid">This is not a valid Noice-Fork or Noice V1 preset link.</string>
+  <string name="fork_about_description">An independent offline fork of Noice V1. The original app’s inventive dual-sample engine and curated soundbank make short recordings feel like a much longer soundscape.</string>
+  <string name="fork_privacy">Privacy policy</string>
+  <string name="fork_maintainer_label">Fork maintainer</string>
+  <string name="fork_original_creator_label">Original Noice creator</string>
+  <string name="fork_support_description">Help keep Noice-Fork free, offline, and maintainable.</string>
+  <string name="fork_share_description">Share the project and tell others where the APK and source are available.</string>
+  <string name="fork_contribute">Contribute on GitHub</string>
+  <string name="fork_contribute_description">Report an issue, share a preset, or help maintain the app.</string>
   <string name="preset_link_duplicate">This mix is already in your presets.</string>
   <string name="preset_link_unnamed">Imported preset</string>
     <string name="about">About</string>
