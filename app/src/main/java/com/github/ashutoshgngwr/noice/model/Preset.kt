@@ -79,7 +79,7 @@ class Preset(
           (uri.scheme == "noice" && uri.encodedAuthority == "preset" && uri.encodedPath.isNullOrEmpty())
       )
       val name = recipe.getQueryParameters(URI_NAME_PARAM).also { require(it.size <= 1) }.firstOrNull().orEmpty()
-      require(name.length <= 150)
+      // The total URI length is bounded above; do not reject names the app already lets users save.
       val payload = recipe.getQueryParameters(URI_PLAYER_STATES_PARAM).singleOrNull()
         ?: throw IllegalArgumentException("Expected one playerStates query parameter")
       val parsed = try {

@@ -30,6 +30,14 @@ class PresetTest {
   }
 
   @Test
+  fun forkLinksImportLongPresetNames() {
+    val name = "Ambient sounds ".repeat(15)
+    val states = arrayOf(Preset.PlayerState("brownian_noise", 21, 300))
+    val preset = Preset("test-id", name, states)
+    assertEquals(name, Preset.fromSharedLink(preset.toForkUri().toString()).name)
+  }
+
+  @Test
   fun sharedLinkRoundTripPreservesTheRecipe() {
     val states = arrayOf(Preset.PlayerState("brownian_noise", 25, 300))
     val link = Preset("old-id", "Offline mix", states).toUri().toString()
