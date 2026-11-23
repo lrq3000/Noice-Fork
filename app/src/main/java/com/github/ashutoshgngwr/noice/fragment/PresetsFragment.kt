@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.media.session.PlaybackStateCompat
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.SeekBar
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ShareCompat
@@ -28,6 +30,7 @@ import com.github.ashutoshgngwr.noice.databinding.PresetsFragmentBinding
 import com.github.ashutoshgngwr.noice.databinding.PresetsListItemBinding
 import com.github.ashutoshgngwr.noice.model.Preset
 import com.github.ashutoshgngwr.noice.playback.PlaybackController
+import com.github.ashutoshgngwr.noice.playback.PresetVolume
 import com.github.ashutoshgngwr.noice.provider.AnalyticsProvider
 import com.github.ashutoshgngwr.noice.repository.PresetRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -45,6 +48,8 @@ class PresetsFragment : Fragment() {
 
   private var adapter: PresetListAdapter? = null
   private var activePresetPos = -1
+  private var presetVolume: PresetVolume? = null
+  private var isPlaying = false
   private var dataSet = mutableListOf<Preset>()
 
   override fun onCreateView(
@@ -115,9 +120,18 @@ class PresetsFragment : Fragment() {
   @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
   fun onPlayerManagerUpdate(event: MediaPlayerService.PlaybackUpdateEvent) {
     val oldPresetPos = activePresetPos
-    activePresetPos = Preset.from("", event.players.values).let { dataSet.indexOf(it) }
-    adapter?.notifyItemChanged(oldPresetPos)
-    adapter?.notifyItemChanged(activePresetPos)
+    presetVolume = event.presetVolume
+    isPlaying = event.state == PlaybackStateCompat.STATE_PLAYING
+    val volume = presetVolume
+    activePresetPos = if (volume != null) {
+      dataSet.indexOfFirst { it.id == volume.presetID }
+    } else {
+      dataSet.indexOfFirst { it.matchesPlayback(event.players) }
+    }
+    if (oldPresetPos in dataSet.indices && oldPresetPos != activePresetPos) {
+      adapter?.notifyItemChanged(oldPresetPos)
+    }
+    if (activePresetPos in dataSet.indices) adapter?.notifyItemChanged(activePresetPos)
   }
 
   private fun updateEmptyListIndicatorVisibility() {
@@ -143,6 +157,7 @@ class PresetsFragment : Fragment() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
       holder.binding.title.text = dataSet[position].name
       holder.binding.playButton.isChecked = position == activePresetPos
+      holder.bindVolume(presetVolume?.takeIf { position == activePresetPos })
     }
   }
 
@@ -150,15 +165,56 @@ class PresetsFragment : Fragment() {
     RecyclerView.ViewHolder(binding.root) {
 
     private val reviewFlowProvider = NoiceApplication.of(requireContext()).reviewFlowProvider
+    private var trackingVolumeTouch = false
+    private var touchVolume: PresetVolume? = null
+
+    fun bindVolume(volume: PresetVolume?) {
+      binding.presetVolumeControls.visibility = if (volume == null) View.GONE else View.VISIBLE
+      binding.presetVolumeSlider.isEnabled = volume?.canAdjust == true && isPlaying
+      if (volume != null) {
+        binding.presetVolumeSlider.progress = volume.percent
+        updateVolumeLabel(volume.percent)
+      }
+    }
+
+    private fun updateVolumeLabel(percent: Int) {
+      binding.presetVolumeLabel.text = getString(R.string.preset_volume_label, percent)
+    }
 
     init {
       binding.playButton.setOnClickListener {
+        val preset = dataSet.getOrNull(bindingAdapterPosition) ?: return@setOnClickListener
         if (bindingAdapterPosition != activePresetPos) {
-          PlaybackController.playPreset(requireContext(), dataSet[bindingAdapterPosition].id)
+          PlaybackController.playPreset(requireContext(), preset.id)
         } else {
           PlaybackController.stop(requireContext())
         }
       }
+
+      binding.presetVolumeSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(slider: SeekBar, progress: Int, fromUser: Boolean) {
+          if (!fromUser || !isPlaying || bindingAdapterPosition != activePresetPos) return
+          val volume = presetVolume ?: return
+          if (dataSet.getOrNull(bindingAdapterPosition)?.id != volume.presetID) return
+          // A media shortcut can restart the same preset without the finger leaving the slider.
+          if (trackingVolumeTouch && touchVolume !== volume) {
+            slider.progress = volume.percent
+            return
+          }
+          volume.setPercent(progress)
+          updateVolumeLabel(volume.percent)
+        }
+
+        override fun onStartTrackingTouch(slider: SeekBar) {
+          trackingVolumeTouch = true
+          touchVolume = presetVolume
+        }
+
+        override fun onStopTrackingTouch(slider: SeekBar) {
+          trackingVolumeTouch = false
+          touchVolume = null
+        }
+      })
 
       val onMenuItemClickListener = PopupMenu.OnMenuItemClickListener {
         when (it.itemId) {

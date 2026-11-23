@@ -31,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.math.roundToInt
 
 class LibraryFragment : Fragment() {
 
@@ -70,7 +71,8 @@ class LibraryFragment : Fragment() {
   @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
   fun onPlayerManagerUpdate(event: MediaPlayerService.PlaybackUpdateEvent) {
     this.players = event.players
-    val showSavePresetFAB = !presetRepository.list().contains(Preset.from("", players.values))
+    val showSavePresetFAB = event.presetVolume == null &&
+      presetRepository.list().none { it.matchesPlayback(event.players) }
 
     view?.post {
       adapter?.notifyDataSetChanged()
@@ -210,11 +212,11 @@ class LibraryFragment : Fragment() {
       val soundKey = dataSet[position].data
       val sound = Sound.get(soundKey)
       val isPlaying = players.containsKey(soundKey)
-      var volume = Player.DEFAULT_VOLUME
+      var volume = Player.DEFAULT_VOLUME.toFloat()
       var timePeriod = Player.DEFAULT_TIME_PERIOD
       if (isPlaying) {
         requireNotNull(players[soundKey]).also {
-          volume = it.volume
+          volume = it.playbackVolume
           timePeriod = it.timePeriod
         }
       }
@@ -235,7 +237,7 @@ class LibraryFragment : Fragment() {
         }
 
         @SuppressLint("SetTextI18n")
-        volumeButton.text = "${(volume * 100) / Player.MAX_VOLUME}%"
+        volumeButton.text = "${(volume * 100 / Player.MAX_VOLUME).roundToInt()}%"
         volumeButton.isEnabled = isPlaying
 
         @SuppressLint("SetTextI18n")

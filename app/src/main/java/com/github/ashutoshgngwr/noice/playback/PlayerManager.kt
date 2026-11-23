@@ -52,6 +52,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
   private lateinit var playbackStrategyFactory: PlaybackStrategyFactory
 
   private val players = HashMap<String, Player>(Sound.LIBRARY.size)
+  private var presetVolume: PresetVolume? = null
   private val handler = Handler(Looper.getMainLooper())
   private val presetRepository = PresetRepository.newInstance(context)
   private val settingsRepository = SettingsRepository.newInstance(context)
@@ -305,6 +306,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
    */
   fun stop() {
     state = PlaybackStateCompat.STATE_STOPPED
+    presetVolume = null
     players.values.forEach {
       it.stop()
       analyticsProvider.logPlayerStopEvent(it.soundKey)
@@ -392,7 +394,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
   }
 
   fun playPreset(presetID: String) {
-    presetRepository.get(presetID)?.also { playPreset(it) }
+    presetRepository.get(presetID)?.also { playPreset(it, saved = true) }
   }
 
   fun playPreset(uri: Uri) {
@@ -406,7 +408,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
    * [PlayerManager] to invoke [playbackUpdateListener] with each [Preset.PlayerState]. This method
    * ensures that [playbackUpdateListener] is invoked only once for any given [Preset].
    */
-  internal fun playPreset(preset: Preset) {
+  internal fun playPreset(preset: Preset, saved: Boolean = false) {
     // stop players that are not present in preset state
     players.keys.subtract(preset.playerStates.map { it.soundKey }).forEach {
       players.remove(it)?.stop()
@@ -427,12 +429,24 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
       player.setVolume(it.volume)
     }
 
+    presetVolume = if (saved && players.isNotEmpty()) {
+      PresetVolume(preset, players) { control ->
+        state == PlaybackStateCompat.STATE_PLAYING && currentPresetVolume() === control
+      }
+    } else null
+
     // resume PlayerManager to gain audio focus and play everything
     resume()
   }
 
   fun callPlaybackUpdateListener() {
     playbackUpdateListener?.invoke(state, players)
+  }
+
+  internal fun currentPresetVolume(): PresetVolume? {
+    // Library edits still make this a custom mix, but the players retain their current audible levels.
+    if (presetVolume?.matchesPlayback() == false) presetVolume = null
+    return presetVolume
   }
 
   private fun notifyChanges() {
@@ -459,7 +473,12 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
     }
 
     val presets = presetRepository.list()
-    val currentPos = presets.indexOf(Preset.from("", players.values))
+    val activeVolume = currentPresetVolume()
+    val currentPos = if (activeVolume != null) {
+      presets.indexOfFirst { it.id == activeVolume.presetID }
+    } else {
+      presets.indexOfFirst { it.matchesPlayback(players) }
+    }
     if (currentPos < 0) {
       return
     }
@@ -471,7 +490,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
       nextPresetIndex = 0
     }
 
-    playPreset(presets[nextPresetIndex])
+    playPreset(presets[nextPresetIndex], saved = true)
   }
 
   fun playerCount(): Int {

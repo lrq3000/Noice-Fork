@@ -119,6 +119,14 @@ class Preset(
     playerStates.sortBy { T -> T.soundKey }
   }
 
+  /** Compare the live mix without the rounding used to serialize a possibly fractional volume. */
+  internal fun matchesPlayback(players: Map<String, Player>): Boolean =
+    players.isNotEmpty() && playerStates.size == players.size && playerStates.all { sound ->
+      val player = players[sound.soundKey]
+      player != null && player.playbackVolume == sound.volume.toFloat() &&
+        player.timePeriod == sound.timePeriod
+    }
+
   override fun equals(other: Any?): Boolean {
     if (this === other) {
       return true

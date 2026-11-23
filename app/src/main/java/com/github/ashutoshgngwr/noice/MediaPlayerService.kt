@@ -17,11 +17,11 @@ import android.util.Log
 import androidx.core.content.getSystemService
 import androidx.mediarouter.media.MediaRouter
 import com.github.ashutoshgngwr.noice.activity.MainActivity
-import com.github.ashutoshgngwr.noice.model.Preset
 import com.github.ashutoshgngwr.noice.playback.PlaybackController
 import com.github.ashutoshgngwr.noice.playback.Player
 import com.github.ashutoshgngwr.noice.playback.PlayerManager
 import com.github.ashutoshgngwr.noice.playback.PlayerNotificationManager
+import com.github.ashutoshgngwr.noice.playback.PresetVolume
 import com.github.ashutoshgngwr.noice.repository.PresetRepository
 import com.github.ashutoshgngwr.noice.repository.SettingsRepository
 import org.greenrobot.eventbus.EventBus
@@ -33,9 +33,12 @@ class MediaPlayerService : Service() {
    * [PlayerManager].
    *
    * @param state [PlaybackStateCompat] representing the current player state
-   * @param players a snapshot of currently playing sound [Players][Player]
+   * @param players the currently playing sound [Players][Player]
+   * @param presetVolume the live volume control when a saved preset is active
    */
-  data class PlaybackUpdateEvent(val state: Int, val players: Map<String, Player>)
+  data class PlaybackUpdateEvent(
+    val state: Int, val players: Map<String, Player>, val presetVolume: PresetVolume? = null
+  )
 
   companion object {
     private val TAG = MediaPlayerService::class.java.simpleName
@@ -97,9 +100,14 @@ class MediaPlayerService : Service() {
   }
 
   private fun onPlaybackUpdate(state: Int, players: Map<String, Player>) {
-    EventBus.getDefault().postSticky(PlaybackUpdateEvent(state, players))
+    val presetVolume = playerManager.currentPresetVolume()
+    EventBus.getDefault().postSticky(PlaybackUpdateEvent(state, players, presetVolume))
 
-    val currentPreset = getCurrentPreset(players.values)
+    val currentPreset = when {
+      presetVolume != null -> presetRepository.get(presetVolume.presetID)
+      players.isNotEmpty() -> presetRepository.list().firstOrNull { it.matchesPlayback(players) }
+      else -> null
+    }
     val title = currentPreset?.name ?: getString(R.string.unsaved_preset)
     mediaSession.setMetadata(
       MediaMetadataCompat.Builder()
@@ -119,16 +127,6 @@ class MediaPlayerService : Service() {
           currentPreset != null
         )
       )
-    }
-  }
-
-  private fun getCurrentPreset(players: Collection<Player>): Preset? {
-    if (players.isEmpty()) {
-      return null
-    }
-
-    return Preset.from("", players).let {
-      presetRepository.list().find { p -> p == it }
     }
   }
 

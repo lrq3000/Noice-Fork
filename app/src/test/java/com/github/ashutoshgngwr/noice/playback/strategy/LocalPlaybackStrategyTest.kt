@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import io.mockk.MockKAnnotations
+import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.impl.annotations.InjectionLookupType
 import io.mockk.impl.annotations.OverrideMockKs
@@ -69,6 +70,36 @@ class LocalPlaybackStrategyTest {
     playbackStrategy.pause()
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
     verify(exactly = 1) { mockPlayer.playWhenReady = false }
+  }
+
+  @Test
+  fun resumingAnIntermittentSoundRestoresItsLevelAfterPause() {
+    every { mockPlayer.repeatMode } returns ExoPlayer.REPEAT_MODE_OFF
+    playbackStrategy.setVolume(0.16f)
+    playbackStrategy.pause()
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
+    clearMocks(mockPlayer, answers = false)
+
+    playbackStrategy.play()
+
+    verifyOrder {
+      mockPlayer.volume = 0.16f
+      mockPlayer.playWhenReady = true
+    }
+  }
+
+  @Test
+  fun resumingALoopDuringItsPauseFadePreventsDelayedPause() {
+    every { mockPlayer.repeatMode } returns ExoPlayer.REPEAT_MODE_ONE
+    every { mockPlayer.playWhenReady } returns true
+    every { mockPlayer.isPlaying } returns true
+    playbackStrategy.setVolume(0.16f)
+    playbackStrategy.pause()
+
+    playbackStrategy.play()
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
+
+    verify(exactly = 0) { mockPlayer.playWhenReady = false }
   }
 
   @Test
