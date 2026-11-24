@@ -1,0 +1,1 @@
+Adjust the whole mix from the active preset’s volume slider without changing the saved balance. Pause and resume keep your adjustment; stopping and replaying restores the saved levels.

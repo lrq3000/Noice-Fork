@@ -1,5 +1,10 @@
 # Noice-Fork changelog
 
+## v1.5.0
+
+- Added a volume slider on the active preset. It starts at the loudest saved sound’s level and adjusts every sound proportionally without modifying the saved preset.
+- Fixed playback resume so intermittent sounds regain their previous level and an unfinished pause fade cannot stop a resumed loop.
+
 ## v1.4.1
 
 - Updated onboarding, About, support links, and project documentation for Noice-Fork.
