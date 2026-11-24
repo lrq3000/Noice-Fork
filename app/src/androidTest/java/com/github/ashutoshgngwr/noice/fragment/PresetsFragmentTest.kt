@@ -57,7 +57,6 @@ class PresetsFragmentTest {
   fun setup() {
     mockkStatic(ShortcutManagerCompat::class)
     mockkObject(
-      Preset.Companion,
       PlaybackController,
       PresetRepository.Companion
     )
@@ -119,10 +118,11 @@ class PresetsFragmentTest {
   @Test
   fun testRecyclerViewItem_stopButton() {
     // ensure that PresetsFragment assumes it is playing a preset
-    every { Preset.from(any(), any()) } returns mockPreset
+    every { mockPreset.matchesPlayback(any()) } returns true
     fragmentScenario.onFragment {
       it.onPlayerManagerUpdate(mockk(relaxed = true) {
         every { state } returns PlaybackStateCompat.STATE_PLAYING
+        every { presetVolume } returns null
       })
     }
 
@@ -192,12 +192,13 @@ class PresetsFragmentTest {
   @Test
   fun testRecyclerViewItem_deleteOption_onPresetPlaying() {
     // ensure that PresetsFragment assumes it is playing a preset
-    every { Preset.from(any(), any()) } returns mockPreset
+    every { mockPreset.matchesPlayback(any()) } returns true
     every { mockPresetRepository.delete(any()) } returns true
 
     fragmentScenario.onFragment {
       it.onPlayerManagerUpdate(mockk(relaxed = true) {
         every { state } returns PlaybackStateCompat.STATE_PLAYING
+        every { presetVolume } returns null
       })
     }
 

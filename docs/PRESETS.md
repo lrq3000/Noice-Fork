@@ -6,6 +6,12 @@ To import, copy the original link and open **Presets → Import preset link** in
 
 To contribute a community preset, [open an issue](https://github.com/LRQ3000/Noice-Fork/issues) with the link and a short description of the mix.
 
+## Adjust preset volume
+
+Play a preset and drag the **Preset volume** slider on its row. It starts at the loudest saved sound’s level and changes all the sounds together without changing their balance. Drag to 0% to mute the mix without stopping it. The adjustment is temporary; pressing Stop and playing the preset again restores its saved levels.
+
+If you adjust an individual sound in the Library, it becomes a custom mix that you can save as a new preset. The preset slider is independent of your device’s media volume.
+
 ## Womb Simulator
 
 The built-in mix follows [@LRQ3000’s original six-layer Noice V1 recipe](https://github.com/trynoice/android-app/issues/1055). Brown noise and gentle environmental sounds give it a low, relatively steady background. The train wheels add a heartbeat-like cadence. It is not a recording from inside the womb. A steady background may make intermittent sounds less noticeable by masking them; this is a design rationale, not a demonstrated benefit of the preset.

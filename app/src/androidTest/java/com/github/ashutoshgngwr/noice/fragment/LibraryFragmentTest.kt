@@ -227,15 +227,15 @@ class LibraryFragmentTest {
       "rolling_thunder" to mockk(relaxed = true)
     )
 
-    val preset = Preset.from("test", mockPlayers.values)
-    mockkObject(Preset.Companion)
-    every { Preset.from("", mockPlayers.values) } returns preset
-    every { mockPresetRepository.list() } returns arrayOf(preset)
+    val savedPreset = Preset("test-id", "test", arrayOf(
+      Preset.PlayerState("birds", 0, 0),
+      Preset.PlayerState("rolling_thunder", 0, 0)
+    ))
+    every { mockPresetRepository.list() } returns arrayOf(savedPreset)
     fragmentScenario.onFragment { fragment ->
-      fragment.onPlayerManagerUpdate(mockk(relaxed = true) {
-        every { state } returns PlaybackStateCompat.STATE_PLAYING
-        every { players } returns mockPlayers
-      })
+      fragment.onPlayerManagerUpdate(
+        MediaPlayerService.PlaybackUpdateEvent(PlaybackStateCompat.STATE_PLAYING, mockPlayers)
+      )
     }
 
     onView(withId(R.id.save_preset_button))
@@ -252,6 +252,7 @@ class LibraryFragmentTest {
       every { players } returns hashMapOf(
         "birds" to mockk(relaxed = true) {
           every { volume } returns 6
+          every { playbackVolume } returns 6f
         },
         "rolling_thunder" to mockk(relaxed = true)
       )

@@ -13,6 +13,7 @@ import com.github.ashutoshgngwr.noice.model.Preset
 import com.github.ashutoshgngwr.noice.model.Sound
 import com.github.ashutoshgngwr.noice.playback.strategy.PlaybackStrategyFactory
 import com.github.ashutoshgngwr.noice.provider.CastAPIProvider
+import com.github.ashutoshgngwr.noice.repository.PresetRepository
 import com.github.ashutoshgngwr.noice.repository.SettingsRepository
 import com.github.ashutoshgngwr.noice.shadow.ShadowMediaSession
 import com.github.ashutoshgngwr.noice.shadow.ShadowMediaSessionCompat
@@ -296,6 +297,117 @@ class PlayerManagerTest {
     assertFalse(players.contains("test"))
     assertTrue(players.contains("test-2"))
     assertTrue(players.contains("test-3"))
+  }
+
+  @Test
+  fun presetVolumeUsesSavedBalanceAcrossMuteAndBoost() {
+    val preset = saveVolumeTestPreset("volume-test", 20, 5)
+    playerManager.playPreset(preset.id)
+
+    val control = requireNotNull(playerManager.currentPresetVolume())
+    assertEquals(80, control.percent)
+    assertPlaybackVolumes(20f, 5f)
+
+    control.setPercent(40)
+    assertPlaybackVolumes(10f, 2.5f)
+    control.setPercent(0)
+    assertPlaybackVolumes(0f, 0f)
+    assertSame(control, playerManager.currentPresetVolume())
+    control.setPercent(100)
+    assertPlaybackVolumes(25f, 6.25f)
+    control.setPercent(80)
+    assertPlaybackVolumes(20f, 5f)
+  }
+
+  @Test
+  fun pauseAndResumeRetainVolumeButReactivationRestoresTheSavedMix() {
+    val preset = saveVolumeTestPreset("volume-test", 20, 5)
+    playerManager.playPreset(preset.id)
+    val firstControl = requireNotNull(playerManager.currentPresetVolume())
+    firstControl.setPercent(40)
+
+    playerManager.pause()
+    playerManager.resume()
+    assertEquals(40, playerManager.currentPresetVolume()?.percent)
+    assertPlaybackVolumes(10f, 2.5f)
+
+    playerManager.stop()
+    assertNull(playerManager.currentPresetVolume())
+    playerManager.playPreset(preset.id)
+    assertEquals(80, playerManager.currentPresetVolume()?.percent)
+    firstControl.setPercent(20)
+    assertPlaybackVolumes(20f, 5f)
+  }
+
+  @Test
+  fun manualVolumeEditDetachesPresetWithoutChangingOtherSounds() {
+    val preset = saveVolumeTestPreset("volume-test", 20, 5)
+    playerManager.playPreset(preset.id)
+    val control = requireNotNull(playerManager.currentPresetVolume())
+    control.setPercent(40)
+
+    players.getValue("brownian_noise").setVolume(12)
+
+    assertNull(playerManager.currentPresetVolume())
+    control.setPercent(100)
+    assertPlaybackVolumes(12f, 2.5f)
+  }
+
+  @Test
+  fun aFractionalCustomMixCannotSkipAsThoughItWereTheSavedPreset() {
+    val first = saveVolumeTestPreset("volume-test", 20, 5)
+    saveVolumeTestPreset("next-test", 10, 3)
+    playerManager.playPreset(first.id)
+    requireNotNull(playerManager.currentPresetVolume()).setPercent(77)
+    players.getValue("brownian_noise").setVolume(20)
+
+    playerManager.skipPreset(PlayerManager.SKIP_DIRECTION_NEXT)
+
+    assertNull(playerManager.currentPresetVolume())
+    assertPlaybackVolumes(20f, 4.8125f)
+  }
+
+  @Test
+  fun allSilentPresetRemainsSilent() {
+    val preset = saveVolumeTestPreset("silent-test", 0, 0)
+    playerManager.playPreset(preset.id)
+    val control = requireNotNull(playerManager.currentPresetVolume())
+
+    control.setPercent(100)
+
+    assertFalse(control.canAdjust)
+    assertEquals(0, control.percent)
+    assertPlaybackVolumes(0f, 0f)
+  }
+
+  @Test
+  fun skippingWorksAfterPresetVolumeChanges() {
+    val first = saveVolumeTestPreset("volume-test", 20, 5)
+    val next = saveVolumeTestPreset("next-test", 10, 3)
+    playerManager.playPreset(first.id)
+    requireNotNull(playerManager.currentPresetVolume()).setPercent(0)
+
+    playerManager.skipPreset(PlayerManager.SKIP_DIRECTION_NEXT)
+
+    val control = requireNotNull(playerManager.currentPresetVolume())
+    assertEquals(next.id, control.presetID)
+    assertEquals(40, control.percent)
+    assertPlaybackVolumes(10f, 3f)
+  }
+
+  private fun saveVolumeTestPreset(id: String, first: Int, second: Int): Preset {
+    every { settingsRepository.shouldIgnoreAudioFocusChanges() } returns true
+    val preset = Preset(id, id, arrayOf(
+      Preset.PlayerState("brownian_noise", first, Player.DEFAULT_TIME_PERIOD),
+      Preset.PlayerState("heavy_rain", second, Player.DEFAULT_TIME_PERIOD)
+    ))
+    PresetRepository.newInstance(ApplicationProvider.getApplicationContext()).create(preset)
+    return preset
+  }
+
+  private fun assertPlaybackVolumes(first: Float, second: Float) {
+    assertEquals(first, players.getValue("brownian_noise").playbackVolume, 0.00001f)
+    assertEquals(second, players.getValue("heavy_rain").playbackVolume, 0.00001f)
   }
 
   /**

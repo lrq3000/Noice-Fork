@@ -9,6 +9,7 @@ import com.github.ashutoshgngwr.noice.model.Sound
 import com.github.ashutoshgngwr.noice.playback.strategy.PlaybackStrategy
 import com.github.ashutoshgngwr.noice.playback.strategy.PlaybackStrategyFactory
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.random.Random.Default.nextInt
 
 /**
@@ -27,8 +28,11 @@ class Player(val soundKey: String, playbackStrategyFactory: PlaybackStrategyFact
     const val MAX_TIME_PERIOD = 1200
   }
 
-  var volume = DEFAULT_VOLUME
+  internal var playbackVolume = DEFAULT_VOLUME.toFloat()
     private set
+
+  // Preset files and share links still use integer volumes; playback can retain fractional levels.
+  val volume: Int get() = playbackVolume.roundToInt()
 
   var timePeriod = DEFAULT_TIME_PERIOD
 
@@ -45,13 +49,17 @@ class Player(val soundKey: String, playbackStrategyFactory: PlaybackStrategyFact
    * Sets the volume for the [Player] using current [PlaybackStrategy].
    */
   fun setVolume(volume: Int) {
-    this.volume = volume
+    setPlaybackVolume(volume.toFloat())
+  }
+
+  internal fun setPlaybackVolume(volume: Float) {
+    playbackVolume = volume
     this.playbackStrategy.setVolume(getScaledVolume())
   }
 
   private fun getScaledVolume(): Float {
     // return 0.5f * log(max(1, volume).toFloat(), 5f) // logarithmic
-    return (0.04f * volume.toFloat()).pow(2) // quadratic
+    return (0.04f * playbackVolume).pow(2) // quadratic
     // return (0.04f * volume.toFloat()).pow(3) // cubic
   }
 
@@ -121,7 +129,7 @@ class Player(val soundKey: String, playbackStrategyFactory: PlaybackStrategyFact
   internal fun updatePlaybackStrategy(playbackStrategyFactory: PlaybackStrategyFactory) {
     playbackStrategy.stop()
     playbackStrategy = playbackStrategyFactory.newInstance(sound).also {
-      it.setVolume(volume.toFloat() / MAX_VOLUME)
+      it.setVolume(getScaledVolume())
       if (isPlaying && sound.isLooping) { // because non looping will automatically play on scheduled callback.
         it.play()
       }

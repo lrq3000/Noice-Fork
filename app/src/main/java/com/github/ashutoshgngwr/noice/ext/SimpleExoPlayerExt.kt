@@ -16,6 +16,10 @@ import kotlin.math.min
 private const val FADE_VOLUME_STEP = 0.001f
 private val handler = Handler(Looper.getMainLooper())
 
+internal fun SimpleExoPlayer.cancelFade() {
+  handler.removeCallbacksAndMessages(this)
+}
+
 /**
  * Fade in and out effect for [SimpleExoPlayer].
  *
@@ -34,7 +38,7 @@ fun SimpleExoPlayer.fade(
   //  previous transition (if on-going) when a new one is scheduled, thus also cancelling its
   //  callback. This behaviour might not be desired.
 
-  handler.removeCallbacksAndMessages(this)
+  cancelFade()
   if (!playWhenReady && !isPlaying) {
     // edge case where fade is requested but playback is not playing.
     volume = toVolume
