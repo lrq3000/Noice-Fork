@@ -32,11 +32,17 @@ class AlarmRingerActivity : AppCompatActivity(), SlideToActView.OnSlideCompleteL
   companion object {
     @VisibleForTesting
     internal const val EXTRA_PRESET_ID = "preset_id"
+    private const val EXTRA_ALARM_STARTED_BY_SERVICE = "alarm_started_by_service"
 
     private const val RC_ALARM = 0x39
+    private const val RC_ALARM_FROM_NOTIFICATION = 0x43
     private val LOG_TAG = AlarmRingerActivity::class.simpleName
 
-    fun getPendingIntent(context: Context, presetID: String?): PendingIntent {
+    fun getPendingIntent(
+      context: Context,
+      presetID: String?,
+      startedByService: Boolean = false
+    ): PendingIntent {
       var piFlags = PendingIntent.FLAG_UPDATE_CURRENT
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         piFlags = piFlags or PendingIntent.FLAG_IMMUTABLE
@@ -44,7 +50,11 @@ class AlarmRingerActivity : AppCompatActivity(), SlideToActView.OnSlideCompleteL
 
       return Intent(context, AlarmRingerActivity::class.java)
         .putExtra(EXTRA_PRESET_ID, presetID)
-        .let { PendingIntent.getActivity(context, RC_ALARM, it, piFlags) }
+        .putExtra(EXTRA_ALARM_STARTED_BY_SERVICE, startedByService)
+        .let {
+          val request = if (startedByService) RC_ALARM_FROM_NOTIFICATION else RC_ALARM
+          PendingIntent.getActivity(context, request, it, piFlags)
+        }
     }
   }
 
@@ -85,6 +95,7 @@ class AlarmRingerActivity : AppCompatActivity(), SlideToActView.OnSlideCompleteL
       finish()
       return
     }
+    if (intent.getBooleanExtra(EXTRA_ALARM_STARTED_BY_SERVICE, false)) return
 
     // Since activity takes a moment to actually show up, invoking `startService` from `onCreate` or
     // `onResume` fails with `java.lang.IllegalStateException: Not allowed to start service Intent:
@@ -107,12 +118,15 @@ class AlarmRingerActivity : AppCompatActivity(), SlideToActView.OnSlideCompleteL
     }
 
     Log.d(LOG_TAG, "onStop(): pausing playback")
-    PlaybackController.pause(this)
-
-    // TODO: find a better solution to wait for pause transition to finish before switching streams.
-    Handler(mainLooper).postDelayed({
-      PlaybackController.setAudioUsage(this, AudioAttributesCompat.USAGE_MEDIA)
-    }, LocalPlaybackStrategy.DEFAULT_FADE_DURATION)
+    if (intent.getBooleanExtra(EXTRA_ALARM_STARTED_BY_SERVICE, false)) {
+      PlaybackController.dismissWakeUpAlarm(this)
+    } else {
+      PlaybackController.pause(this)
+      // Wait for the current pause transition before switching away from the alarm stream.
+      Handler(mainLooper).postDelayed({
+        PlaybackController.setAudioUsage(this, AudioAttributesCompat.USAGE_MEDIA)
+      }, LocalPlaybackStrategy.DEFAULT_FADE_DURATION)
+    }
 
     val duration = System.currentTimeMillis() - ringerStartTime
     analyticsProvider.logEvent("alarm_ringer_session", bundleOf("duration_ms" to duration))

@@ -54,7 +54,8 @@ class WakeUpTimerFragmentTest {
     }
 
     every { PresetRepository.newInstance(any()) } returns mockPresetRepository
-    every { WakeUpTimerManager.set(any(), any()) } returns Unit
+    every { WakeUpTimerManager.set(any(), any()) } returns true
+    every { WakeUpTimerManager.canScheduleExactAlarm(any()) } returns true
     fragmentScenario = launchFragmentInContainer(null, R.style.Theme_App)
   }
 

@@ -27,7 +27,6 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.After
@@ -36,6 +35,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLooper
 
@@ -53,8 +53,10 @@ class PlayerManagerTest {
   @Before
   fun setup() {
     mockCastAPIProvider = mockk(relaxed = true)
-    ApplicationProvider.getApplicationContext<NoiceApplication>()
-      .castAPIProvider = mockCastAPIProvider
+    val application = ApplicationProvider.getApplicationContext<NoiceApplication>()
+    application.castAPIProvider = mockCastAPIProvider
+    // The mixer reads bundled assets only; do not instantiate the newer Robolectric Wi-Fi shadow.
+    shadowOf(application).removeSystemService(Context.WIFI_SERVICE)
 
     // always have a fake player in manager's state
     players = hashMapOf("test" to mockk(relaxed = true) {
@@ -268,12 +270,12 @@ class PlayerManagerTest {
     }
 
     val mockPlaybackStrategy = mockk<PlaybackStrategyFactory>(relaxed = true)
-    val spyVolumeProvider = spyk<VolumeProviderCompat>()
+    val volumeProvider = object : VolumeProviderCompat(VolumeProviderCompat.VOLUME_CONTROL_ABSOLUTE, 100, 50) {}
     every { mockCastAPIProvider.getPlaybackStrategyFactory(any()) } returns mockPlaybackStrategy
-    every { mockCastAPIProvider.getVolumeProvider() } returns spyVolumeProvider
+    every { mockCastAPIProvider.getVolumeProvider() } returns volumeProvider
     listenerSlot.captured.onSessionBegin() // invoke the session begin callback
     verify(exactly = 1) { players.getValue("test").updatePlaybackStrategy(mockPlaybackStrategy) }
-    assertEquals(spyVolumeProvider, ShadowMediaSessionCompat.currentVolumeProvider)
+    assertEquals(volumeProvider, ShadowMediaSessionCompat.currentVolumeProvider)
     clearMocks(mockPlaybackStrategy, players.getValue("test"))
 
     listenerSlot.captured.onSessionEnd()

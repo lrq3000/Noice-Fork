@@ -8,6 +8,10 @@ jacoco {
 }
 
 android {
+  testCoverage {
+    jacocoVersion = '0.8.7'
+  }
+
   testOptions {
     unitTests.all {
       jacoco {
@@ -44,9 +48,9 @@ project.afterEvaluate {
       classDirectories.setFrom(classFiles)
 
       reports {
-        xml.enabled = true
-        xml.destination file("${project.buildDir}/reports/jacoco/${taskName}/report.xml")
-        html.enabled = true
+        xml.required = true
+        xml.outputLocation = file("${project.buildDir}/reports/jacoco/${taskName}/report.xml")
+        html.required = true
       }
     }
   }

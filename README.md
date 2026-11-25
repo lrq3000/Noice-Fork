@@ -33,13 +33,15 @@ Noice-Fork supports **Android 5.0 (Lollipop, API 21) and later** on both phones 
 
 The current release APK is debug-signed and is not distributed through Google Play or F-Droid. For development snapshots, sign in to GitHub, open [Actions → Debug APK](https://github.com/LRQ3000/Noice-Fork/actions/workflows/debug-apk.yml), and download the `Noice-Fork-debug` artifact from a successful `main` run. Unzip it to get the APK.
 
+If Play Protect says the app was built for an older Android version, check that you downloaded the newest APK. [That warning is based on the APK's target API](https://developers.google.com/android/play-protect/warning-dev-guidance#android_app_compatibility_too_low_warning), not debug signing. Keep Play Protect enabled.
+
 **Updating from an older APK?** Android cannot install one signed with a different key over your existing build. Before uninstalling, back up your mixes under **Settings → Presets → Export to a file**. After reinstalling, use **Import from a file** to restore them. File import replaces the current preset collection.
 
 ## Quick start
 
 1. **Play a ready-made mix:** open **Presets** and tap the play button beside **Thunderstorm** or **Beach**.
 2. **Make your own:** open **Library**, then tap sounds to turn them on or off. Tap the percentage beside a playing sound to adjust its volume. Use **Save Preset** (the save icon) while the new mix is playing to name and save it.
-3. **Set a timer:** open **Sleep Timer** and add time to stop playback after a delay. To start playback at a specific time, open **Wake-up Timer**, choose a preset and time, then tap **Schedule**.
+3. **Set a timer:** open **Sleep Timer** and add time to stop playback after a delay. To start playback at a specific time, open **Wake-up Timer**, choose a preset and time, then tap **Schedule**. If Android asks for **Alarms & reminders** access, grant it and tap **Schedule** again. On newer Android versions, the wake-up preset can still play when full-screen alerts are disabled; use the notification or media controls to stop it.
 4. **Send or import a mix:** in **Presets**, open the mix’s menu and choose **Share**. To use a shared mix, copy the entire link, including any `#` fragment, then open **Presets → Import preset link** and paste it. See the [preset guide](docs/PRESETS.md).
 
 ## The Tech
@@ -76,11 +78,12 @@ The app source code is licensed under the [GNU General Public License v3.0 only 
 
 ## Build and contribute
 
-With JDK 11 and Android SDK 30, run the commands below from the repository root. On Windows, use `.\gradlew.bat` instead of `./gradlew`. The free variant does not require Google services configuration.
+With JDK 17, Android SDK 35 and Build-Tools 35.0.0, run the commands below from the repository root. On Windows, use `.\gradlew.bat` instead of `./gradlew` and point the manifest check to the SDK's `aapt2.exe`. The free variant does not require Google services configuration.
 
 ```sh
 ./gradlew :app:testFreeDebugUnitTest :app:assembleFreeDebug
 python3 scripts/verify_audio.py --apk app/build/outputs/apk/free/debug/app-free-debug.apk
+python3 scripts/verify_android_compatibility.py --apk app/build/outputs/apk/free/debug/app-free-debug.apk --aapt2 "$ANDROID_HOME/build-tools/35.0.0/aapt2"
 ```
 
 Use the [issue tracker](https://github.com/LRQ3000/Noice-Fork/issues) to report a bug, request a feature, or share a preset. See the [contribution guide](docs/CONTRIBUTING.md) and the [F-Droid packaging draft](docs/fdroid/SUBMISSION.md).

@@ -1,7 +1,11 @@
 package com.github.ashutoshgngwr.noice.fragment
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -46,7 +50,8 @@ class WakeUpTimerFragment : Fragment() {
     presetRepository = PresetRepository.newInstance(requireContext())
 
     WakeUpTimerManager.get(requireContext())?.also {
-      if (it.atMillis > System.currentTimeMillis()) {
+      if (it.atMillis > System.currentTimeMillis() &&
+        WakeUpTimerManager.canScheduleExactAlarm(requireContext())) {
         selectedPresetID = it.presetID
         selectedTime = it.atMillis
       }
@@ -54,6 +59,7 @@ class WakeUpTimerFragment : Fragment() {
 
     // check selectedPresetID exists in user preferences.
     if (presetRepository.get(selectedPresetID) == null) {
+      if (selectedTime > 0) WakeUpTimerManager.cancel(requireContext())
       resetControls()
     }
 
@@ -71,6 +77,10 @@ class WakeUpTimerFragment : Fragment() {
       title(R.string.select_preset)
       if (presets.isNotEmpty()) {
         singleChoiceItems(presetNames, presetIDs.indexOf(selectedPresetID)) { choice ->
+          if (selectedTime > System.currentTimeMillis() &&
+            !scheduleTimer(presetIDs[choice], selectedTime)) {
+            return@singleChoiceItems
+          }
           selectedPresetID = presetIDs[choice]
           changedPreset = true
           notifyUpdate()
@@ -85,6 +95,7 @@ class WakeUpTimerFragment : Fragment() {
   }
 
   private fun onResetTimeClicked() {
+    WakeUpTimerManager.cancel(requireContext())
     resetControls()
     notifyUpdate()
     Snackbar.make(requireView(), R.string.wake_up_timer_cancelled, Snackbar.LENGTH_LONG).show()
@@ -111,6 +122,8 @@ class WakeUpTimerFragment : Fragment() {
       calendar.add(Calendar.DAY_OF_MONTH, 1)
     }
 
+    val presetID = selectedPresetID ?: return
+    if (!scheduleTimer(presetID, calendar.timeInMillis)) return
     selectedTime = calendar.timeInMillis
 
     notifyUpdate()
@@ -129,10 +142,34 @@ class WakeUpTimerFragment : Fragment() {
       .maybeAskForReview(requireActivity())
   }
 
-  /**
-   * [notifyUpdate] updates user interface according to currently set timer values. It also
-   * schedules or cancels timer using [WakeUpTimerManager] based on these values.
-   */
+  private fun scheduleTimer(presetID: String, atMillis: Long): Boolean {
+    val context = requireContext()
+    val timer = WakeUpTimerManager.Timer(presetID, atMillis)
+    if (WakeUpTimerManager.set(context, timer)) return true
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+      !WakeUpTimerManager.canScheduleExactAlarm(context)) {
+      DialogFragment.show(childFragmentManager) {
+        title(R.string.wake_up_timer)
+        message(R.string.wake_up_timer_exact_alarm_message)
+        negativeButton(R.string.cancel)
+        positiveButton(R.string.wake_up_timer_open_settings) {
+          try {
+            startActivity(
+              Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.fromParts("package", context.packageName, null))
+            )
+          } catch (_: ActivityNotFoundException) {
+            Snackbar.make(requireView(), R.string.wake_up_timer_exact_alarm_message, Snackbar.LENGTH_LONG).show()
+          }
+        }
+      }
+    } else {
+      Snackbar.make(requireView(), R.string.wake_up_timer_schedule_failed, Snackbar.LENGTH_LONG).show()
+    }
+    return false
+  }
+
+  /** Render timer state without scheduling or canceling alarms as a side effect of opening the screen. */
   private fun notifyUpdate() {
     val selectedPreset = presetRepository.get(selectedPresetID)
     val isTimerValid = selectedTime > System.currentTimeMillis() && selectedPreset != null
@@ -146,14 +183,6 @@ class WakeUpTimerFragment : Fragment() {
       binding.selectPresetButton.text = selectedPreset.name
     }
 
-    if (isTimerValid) {
-      WakeUpTimerManager.set(
-        requireContext(),
-        WakeUpTimerManager.Timer(requireNotNull(selectedPresetID), selectedTime)
-      )
-    } else {
-      WakeUpTimerManager.cancel(requireContext())
-    }
   }
 
   private fun updateTimePicker() {

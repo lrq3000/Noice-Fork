@@ -46,6 +46,7 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
   private var playbackDelayed = false
   private var resumeOnFocusGain = false
   private var playbackUpdateListener: PlaybackUpdateListener? = null
+  private var wakeUpDismissAction: (() -> Boolean)? = null
 
   private lateinit var audioAttributes: AudioAttributesCompat
   private lateinit var audioFocusRequest: AudioFocusRequestCompat
@@ -105,12 +106,14 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
       }
 
       override fun onStop() {
+        if (wakeUpDismissAction?.invoke() == true) return
         if (settingsRepository.isMediaButtonsEnabled()) {
           stop()
         }
       }
 
       override fun onPause() {
+        if (wakeUpDismissAction?.invoke() == true) return
         if (settingsRepository.isMediaButtonsEnabled()) {
           pause()
         }
@@ -387,6 +390,10 @@ class PlayerManager(private val context: Context, private val mediaSession: Medi
    */
   fun setPlaybackUpdateListener(listener: PlaybackUpdateListener) {
     playbackUpdateListener = listener
+  }
+
+  internal fun setWakeUpDismissAction(action: () -> Boolean) {
+    wakeUpDismissAction = action
   }
 
   fun playRandomPreset(tag: Sound.Tag? = null, intensity: IntRange = 2 until 6) {

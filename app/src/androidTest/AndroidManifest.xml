@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- screengrab-permissions -->
+  <!-- Device-test permissions belong to the test APK, never the distributed debug APK. -->
 
   <!-- Allows unlocking your device and activating its screen so UI tests can succeed -->
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
@@ -23,9 +23,5 @@
   <uses-permission
     android:name="android.permission.DUMP"
     tools:ignore="ProtectedPermissions" />
-
-  <!-- /screengrab-permissions -->
-
-  <application tools:ignore="AllowBackup" />
 
 </manifest>

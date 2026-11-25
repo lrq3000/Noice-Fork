@@ -116,6 +116,9 @@
     <string name="select_preset">Select Preset</string>
     <string name="wake_up_timer_cancelled">Wake-up Timer cancelled!</string>
     <string name="wake_up_timer_schedule_set">The alarm will go off in %1$s %2$s %3$s</string>
+    <string name="wake_up_timer_schedule_failed">The alarm was not scheduled. Check the preset and time, then try again.</string>
+    <string name="wake_up_timer_exact_alarm_message">Allow Noice-Fork under Alarms &amp; reminders in Android Settings. Then come back and tap Schedule again.</string>
+    <string name="wake_up_timer_open_settings">Open Android Settings</string>
     <string name="time_bridge">and</string>
     <plurals name="time_hours">
         <item quantity="one">%1$d hour</item>

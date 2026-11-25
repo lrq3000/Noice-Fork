@@ -6,12 +6,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.edit
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
 import com.github.ashutoshgngwr.noice.activity.AlarmRingerActivity
 import com.github.ashutoshgngwr.noice.activity.MainActivity
+import com.github.ashutoshgngwr.noice.playback.PlaybackController
 import com.github.ashutoshgngwr.noice.repository.PresetRepository
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.Expose
@@ -48,29 +50,52 @@ object WakeUpTimerManager {
       PendingIntent.getActivity(context, RC_MAIN_ACTIVITY, it, piFlags)
     }
 
+  fun canScheduleExactAlarm(context: Context): Boolean =
+    Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+      withAlarmManager(context) { it.canScheduleExactAlarms() }
+
+  private fun getAlarmOperation(context: Context, presetID: String?): PendingIntent =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      // An exact alarm can start a foreground service even if Android blocks an activity launch.
+      PlaybackController.buildWakeUpAlarmPendingIntent(context, presetID)
+    } else {
+      AlarmRingerActivity.getPendingIntent(context, presetID)
+    }
+
   /**
    * [set] schedules the given [Timer] using Android's [AlarmManager]. It also persists the [Timer]
    * instance onto device storage to be able return it later upon querying.
    */
-  fun set(context: Context, timer: Timer) {
-    if (timer.atMillis < System.currentTimeMillis()) {
-      return
+  fun set(context: Context, timer: Timer): Boolean {
+    if (timer.atMillis <= System.currentTimeMillis() || !canScheduleExactAlarm(context)) {
+      return false
     }
 
     if (PresetRepository.newInstance(context).get(timer.presetID) == null) {
-      return
+      return false
+    }
+
+    try {
+      withAlarmManager(context) {
+        it.setAlarmClock(
+          AlarmManager.AlarmClockInfo(timer.atMillis, getPendingIntentForActivity(context)),
+          getAlarmOperation(context, timer.presetID)
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          // Cancel the old activity-based operation when upgrading an existing alarm.
+          it.cancel(AlarmRingerActivity.getPendingIntent(context, null))
+        }
+      }
+    } catch (e: SecurityException) {
+      // Special access can change between the check and scheduling.
+      Log.w("WakeUpTimerManager", "Unable to schedule an exact wake-up alarm", e)
+      return false
     }
 
     PreferenceManager.getDefaultSharedPreferences(context).edit {
       putString(PREF_WAKE_UP_TIMER, gson.toJson(timer))
     }
-
-    withAlarmManager(context) {
-      it.setAlarmClock(
-        AlarmManager.AlarmClockInfo(timer.atMillis, getPendingIntentForActivity(context)),
-        AlarmRingerActivity.getPendingIntent(context, timer.presetID)
-      )
-    }
+    return true
   }
 
   /**
@@ -83,7 +108,10 @@ object WakeUpTimerManager {
 
     withAlarmManager(context) {
       // don't need concrete timer value for cancelling the alarm.
-      it.cancel(AlarmRingerActivity.getPendingIntent(context, null))
+      it.cancel(getAlarmOperation(context, null))
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        it.cancel(AlarmRingerActivity.getPendingIntent(context, null))
+      }
     }
   }
 
@@ -121,13 +149,16 @@ object WakeUpTimerManager {
   }
 
   /**
-   * [BootReceiver] ensures that a scheduled [Timer] is able to persist across device restarts.
+   * Restores a future timer after reboot, app update or Android regranting exact-alarm access.
    */
   class BootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
-      if (Intent.ACTION_BOOT_COMPLETED != intent?.action) {
-        return
+      when (intent?.action) {
+        Intent.ACTION_BOOT_COMPLETED,
+        Intent.ACTION_MY_PACKAGE_REPLACED,
+        AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED -> Unit
+        else -> return
       }
 
       val timer = get(context) ?: return

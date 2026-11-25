@@ -1,12 +1,19 @@
 package com.github.ashutoshgngwr.noice
 
+import android.app.Notification
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.media.AudioManager
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.media.AudioManagerCompat
+import androidx.mediarouter.media.MediaRouter
 import androidx.test.core.app.ApplicationProvider
 import com.github.ashutoshgngwr.noice.playback.PlaybackController
 import com.github.ashutoshgngwr.noice.playback.PlaybackUpdateListener
 import com.github.ashutoshgngwr.noice.playback.Player
 import com.github.ashutoshgngwr.noice.playback.PlayerManager
+import com.github.ashutoshgngwr.noice.repository.PresetRepository
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.invoke
@@ -25,7 +32,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ServiceController
+import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLooper
 import org.robolectric.shadows.ShadowPowerManager
 
@@ -39,8 +48,12 @@ class MediaPlayerServiceTest {
   @Before
   fun setup() {
     // mock so that service is created (onCreate calls CastAPIProvider constructor via PlayerManager).
-    ApplicationProvider.getApplicationContext<NoiceApplication>()
-      .castAPIProvider = mockk(relaxed = true)
+    val application = ApplicationProvider.getApplicationContext<NoiceApplication>()
+    application.castAPIProvider = mockk(relaxed = true)
+    shadowOf(application).removeSystemService(Context.WIFI_SERVICE)
+    // No cast devices are involved; leave the real player and media session under test.
+    mockkStatic(MediaRouter::class)
+    every { MediaRouter.getInstance(any()) } returns mockk(relaxed = true)
 
     mockkStatic(EventBus::class)
     mockEventBus = mockk(relaxed = true)
@@ -98,6 +111,56 @@ class MediaPlayerServiceTest {
     ShadowLooper.idleMainLooper()
     assertFalse(ShadowPowerManager.getLatestWakeLock().isHeld)
     verify(exactly = 1) { PlaybackController.clearAutoStopCallback() }
+  }
+
+  @Test
+  @Config(sdk = [31])
+  fun aBackgroundWakeUpAlarmEntersTheMediaForegroundBeforeRequestingAudioFocus() {
+    val service = serviceController.create().get()
+    val preset = PresetRepository.newInstance(service).list().first()
+    val shadow = shadowOf(service)
+    mockkStatic(AudioManagerCompat::class)
+    every { AudioManagerCompat.requestAudioFocus(any(), any()) } answers {
+      assertEquals(ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK, service.foregroundServiceType)
+      assertEquals(Notification.CATEGORY_ALARM, shadow.lastForegroundNotification.category)
+      AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+    }
+    every { AudioManagerCompat.abandonAudioFocusRequest(any(), any()) } returns AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+
+    service.onStartCommand(
+      Intent(PlaybackController.ACTION_RING_WAKE_UP).putExtra(PlaybackController.EXTRA_PRESET_ID, preset.id),
+      0,
+      1
+    )
+    verify { AudioManagerCompat.requestAudioFocus(any(), any()) }
+    assertTrue(shadow.isLastForegroundNotificationAttached)
+
+    service.onStartCommand(Intent(PlaybackController.ACTION_DISMISS_WAKE_UP), 0, 2)
+    assertTrue(shadow.isForegroundStopped)
+    assertFalse(shadow.isLastForegroundNotificationAttached)
+    serviceController.destroy()
+  }
+
+  @Test
+  @Config(sdk = [31])
+  fun anAlarmDuringExistingPlaybackPostsADistinctForegroundNotification() {
+    val service = serviceController.create().get()
+    val preset = PresetRepository.newInstance(service).list().first()
+    val shadow = shadowOf(service)
+    mockkStatic(AudioManagerCompat::class)
+    every { AudioManagerCompat.requestAudioFocus(any(), any()) } returns AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+    every { AudioManagerCompat.abandonAudioFocusRequest(any(), any()) } returns AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+    fun send(action: String, id: Int) {
+      service.onStartCommand(Intent(action).putExtra(PlaybackController.EXTRA_PRESET_ID, preset.id), 0, id)
+    }
+    send(PlaybackController.ACTION_PLAY_PRESET, 1)
+    val playbackNotificationId = shadow.lastForegroundNotificationId
+
+    send(PlaybackController.ACTION_RING_WAKE_UP, 2)
+
+    assertNotEquals(playbackNotificationId, shadow.lastForegroundNotificationId)
+    assertEquals(Notification.CATEGORY_ALARM, shadow.lastForegroundNotification.category)
+    serviceController.destroy()
   }
 
   @Test

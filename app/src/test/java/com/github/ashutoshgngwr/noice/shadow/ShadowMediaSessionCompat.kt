@@ -45,14 +45,19 @@ class ShadowMediaSessionCompat {
 
   @Implementation
   fun setPlaybackState(state: PlaybackStateCompat) {
-    directlyOn(realMediaSessionCompat, MediaSessionCompat::class.java).setPlaybackState(state)
+    directlyOn<Unit, MediaSessionCompat>(
+      realMediaSessionCompat, MediaSessionCompat::class.java, "setPlaybackState",
+      ClassParameter.from(PlaybackStateCompat::class.java, state)
+    )
     currentPlaybackState = state
   }
 
   @Implementation
   fun setPlaybackToRemote(volumeProvider: VolumeProviderCompat) {
-    directlyOn(realMediaSessionCompat, MediaSessionCompat::class.java)
-      .setPlaybackToRemote(volumeProvider)
+    directlyOn<Unit, MediaSessionCompat>(
+      realMediaSessionCompat, MediaSessionCompat::class.java, "setPlaybackToRemote",
+      ClassParameter.from(VolumeProviderCompat::class.java, volumeProvider)
+    )
 
     currentVolumeProvider = volumeProvider
   }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Preserve the v1 layouts until they handle system-bar insets themselves. -->
+  <style name="Base.Theme.App" parent="Base.V27.Theme.App">
+    <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+  </style>
+
+  <style name="Theme.App.Intro" parent="Base.Theme.App.Intro">
+    <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+  </style>
+</resources>

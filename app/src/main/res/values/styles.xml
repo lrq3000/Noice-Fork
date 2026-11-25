@@ -2,6 +2,10 @@
 
   <style name="Base.V21.Theme.App" parent="Theme.MaterialComponents.DayNight" />
 
+  <style name="Base.Theme.App.Intro" parent="Theme.MaterialComponents.NoActionBar" />
+
+  <style name="Theme.App.Intro" parent="Base.Theme.App.Intro" />
+
   <style name="Base.Theme.App" parent="Base.V21.Theme.App">
     <item name="android:statusBarColor">@color/status_bar</item>
     <item name="android:navigationBarColor">@color/status_bar</item>

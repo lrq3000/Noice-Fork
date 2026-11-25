@@ -1,32 +1,35 @@
 plugins {
   id 'com.android.application'
   id 'kotlin-android'
-
-  id 'com.adarshr.test-logger' version '3.0.0'
 }
 
 apply from: 'jacoco.gradle'
 
 android {
-  compileSdkVersion 30
+  namespace 'com.github.ashutoshgngwr.noice'
+  compileSdkVersion 35
+  buildToolsVersion '35.0.0'
 
   defaultConfig {
     applicationId 'io.github.lrq3000.noicefork'
     minSdkVersion 21
-    targetSdkVersion 30
+    targetSdkVersion 35
     versionCode 55
     versionName '1.5.0'
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
 
   buildFeatures {
+    buildConfig true
     viewBinding true
   }
 
   buildTypes {
     debug {
       applicationIdSuffix '.debug'
-      testCoverageEnabled true
+      // Instrumentation coverage is optional; do not instrument the APK distributed to users.
+      enableAndroidTestCoverage = providers.gradleProperty('androidTestCoverage')
+        .map { it.toBoolean() }.getOrElse(false)
     }
 
     release {
@@ -60,18 +63,15 @@ android {
   }
 
   kotlinOptions {
-    useIR = true
     jvmTarget = 1.8
-    freeCompilerArgs += ["-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"]
+    freeCompilerArgs += ["-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"]
   }
 
   testOptions {
     unitTests {
       includeAndroidResources = true
       all {
-        testlogger {
-          theme 'mocha'
-        }
+        testLogging.events 'failed', 'skipped'
       }
     }
   }
@@ -79,7 +79,7 @@ android {
 
 dependencies {
   def fragmentVersion = '1.3.6'
-  def testCoreVersion = '1.3.0'
+  def testCoreVersion = '1.7.0'
   def junitVersion = '4.13.2'
   def mockkVersion = '1.12.0'
   def espressoVersion = '3.3.0'
@@ -128,9 +128,11 @@ dependencies {
 
 
   testImplementation "androidx.test:core:$testCoreVersion"
+  // Robolectric uses the modern AndroidX test stack; keep its annotations on the JVM test classpath only.
+  testImplementation 'androidx.annotation:annotation:1.8.1'
   testImplementation "io.mockk:mockk:$mockkVersion"
   testImplementation "junit:junit:$junitVersion"
-  testImplementation 'org.robolectric:robolectric:4.5.1'
+  testImplementation 'org.robolectric:robolectric:4.17'
   testImplementation 'org.skyscreamer:jsonassert:1.5.0'
 
   testFullImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
@@ -142,10 +144,15 @@ dependencies {
   androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
   androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
   androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+  androidTestImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
   androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
   androidTestImplementation "junit:junit:$junitVersion"
 
   androidTestFullImplementation 'tools.fastlane:screengrab:2.1.0'
 
-  debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
+  // FragmentScenario needs its host inside the app under test, not in the APK handed to users.
+  if (providers.gradleProperty('deviceTests').map { it.toBoolean() }.getOrElse(false)) {
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
+    debugImplementation "androidx.test:core:$testCoreVersion"
+  }
 }

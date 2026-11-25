@@ -24,6 +24,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowAlarmManager
 
 @RunWith(RobolectricTestRunner::class)
@@ -79,10 +80,37 @@ class WakeUpTimerManagerTest {
       mockPrefsEditor.apply()
     }
 
-    val alarm = shadowAlarmManager.nextScheduledAlarm
-    val i = shadowOf(alarm.operation).savedIntent
+    val alarm = requireNotNull(shadowAlarmManager.nextScheduledAlarm)
+    val i = shadowOf(requireNotNull(alarm.operation)).savedIntent
     assertEquals(expectedTime, alarm.triggerAtTime)
     assertEquals(expectedPresetID, i.getStringExtra(PlaybackController.EXTRA_PRESET_ID))
+  }
+
+  @Test
+  @Config(sdk = [31])
+  fun denyingExactAlarmAccessDoesNotScheduleOrPersistTheTimer() {
+    ShadowAlarmManager.setCanScheduleExactAlarms(false)
+    every { mockPresetRepository.get("test") } returns mockk()
+    val context = ApplicationProvider.getApplicationContext<Context>()
+
+    WakeUpTimerManager.set(context, WakeUpTimerManager.Timer("test", System.currentTimeMillis() + 10000L))
+
+    assertNull(shadowAlarmManager.nextScheduledAlarm)
+    verify(exactly = 0) { mockPrefs.edit() }
+  }
+
+  @Test
+  @Config(sdk = [31])
+  fun aRecentAndroidAlarmCanStartPlaybackWithoutALaunchableActivity() {
+    ShadowAlarmManager.setCanScheduleExactAlarms(true)
+    every { mockPresetRepository.get("test") } returns mockk()
+    val context = ApplicationProvider.getApplicationContext<Context>()
+
+    WakeUpTimerManager.set(context, WakeUpTimerManager.Timer("test", System.currentTimeMillis() + 10000L))
+
+    val operation = requireNotNull(shadowAlarmManager.nextScheduledAlarm?.operation)
+    assertEquals(MediaPlayerService::class.java.name, shadowOf(operation).savedIntent.component?.className)
+    assertEquals(true, operation.isForegroundService)
   }
 
   @Test
@@ -130,7 +158,7 @@ class WakeUpTimerManagerTest {
     WakeUpTimerManager.BootReceiver()
       .onReceive(ApplicationProvider.getApplicationContext(), Intent(Intent.ACTION_BOOT_COMPLETED))
 
-    assertEquals(expectedTime, shadowAlarmManager.nextScheduledAlarm.triggerAtTime)
+    assertEquals(expectedTime, requireNotNull(shadowAlarmManager.nextScheduledAlarm).triggerAtTime)
   }
 
   @Test
@@ -140,6 +168,23 @@ class WakeUpTimerManagerTest {
       .onReceive(ApplicationProvider.getApplicationContext(), Intent(Intent.ACTION_BOOT_COMPLETED))
 
     assertNull(shadowAlarmManager.nextScheduledAlarm)
+  }
+
+  @Test
+  @Config(sdk = [31])
+  fun grantingExactAlarmAccessReschedulesAnExistingFutureTimer() {
+    ShadowAlarmManager.setCanScheduleExactAlarms(true)
+    val expectedTime = System.currentTimeMillis() + 10000L
+    every { mockPrefs.getString(WakeUpTimerManager.PREF_WAKE_UP_TIMER, any()) } returns
+      """{"presetID":"test","atMillis":$expectedTime}"""
+    every { mockPresetRepository.get("test") } returns mockk()
+
+    WakeUpTimerManager.BootReceiver().onReceive(
+      ApplicationProvider.getApplicationContext(),
+      Intent(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)
+    )
+
+    assertEquals(expectedTime, shadowAlarmManager.nextScheduledAlarm?.triggerAtTime)
   }
 
   @Test

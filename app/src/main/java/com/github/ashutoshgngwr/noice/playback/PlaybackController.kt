@@ -39,6 +39,8 @@ object PlaybackController {
   internal const val ACTION_REQUEST_UPDATE_EVENT = "request_update_event"
   internal const val ACTION_SET_AUDIO_USAGE = "set_audio_usage"
   internal const val EXTRA_AUDIO_USAGE = "audio_usage"
+  internal const val ACTION_RING_WAKE_UP = "ring_wake_up"
+  internal const val ACTION_DISMISS_WAKE_UP = "dismiss_wake_up"
 
   private val TAG = PlaybackController::class.simpleName
   private val AUTO_STOP_CALLBACK_TOKEN = "${TAG}.auto_stop_cb"
@@ -51,6 +53,8 @@ object PlaybackController {
   private const val RC_PAUSE = 0x3D
   private const val RC_STOP = 0x3E
   private const val RC_RANDOM_PRESET = 0x3F
+  private const val RC_RING_WAKE_UP = 0x41
+  private const val RC_DISMISS_WAKE_UP = 0x42
 
   private val handler = Handler(Looper.getMainLooper())
 
@@ -68,6 +72,24 @@ object PlaybackController {
 
   fun buildRandomPresetActionPendingIntent(context: Context): PendingIntent {
     return buildSimpleActionPendingIntent(context, ACTION_PLAY_RANDOM_PRESET, RC_RANDOM_PRESET)
+  }
+
+  internal fun buildWakeUpAlarmPendingIntent(context: Context, presetID: String?): PendingIntent {
+    val intent = Intent(context, MediaPlayerService::class.java)
+      .setAction(ACTION_RING_WAKE_UP)
+      .putExtra(EXTRA_PRESET_ID, presetID)
+    return buildPendingIntent(context, intent, RC_RING_WAKE_UP)
+  }
+
+  internal fun buildDismissWakeUpPendingIntent(context: Context): PendingIntent =
+    PendingIntent.getService(
+      context, RC_DISMISS_WAKE_UP,
+      Intent(context, MediaPlayerService::class.java).setAction(ACTION_DISMISS_WAKE_UP),
+      PendingIntent.FLAG_IMMUTABLE
+    )
+
+  internal fun dismissWakeUpAlarm(context: Context) {
+    context.startService(Intent(context, MediaPlayerService::class.java).setAction(ACTION_DISMISS_WAKE_UP))
   }
 
   private fun buildSimpleActionPendingIntent(
