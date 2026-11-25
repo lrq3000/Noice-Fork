@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="default_sound_fade_in_seconds">5</integer>
+</resources>

@@ -12,7 +12,7 @@
       android:title="@string/presets_as_home_screen" />
 
     <SeekBarPreference
-      android:defaultValue="1"
+      android:defaultValue="@integer/default_sound_fade_in_seconds"
       android:icon="@drawable/ic_settings_fade_in_duration"
       android:key="@string/sound_fade_in_duration_key"
       android:max="10"

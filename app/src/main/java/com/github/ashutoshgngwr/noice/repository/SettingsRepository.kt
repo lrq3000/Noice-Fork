@@ -70,8 +70,20 @@ class SettingsRepository private constructor(private val context: Context) {
     return prefs.getInt(
       context.getString(R.string.sound_fade_in_duration_key),
       // inherit fallback value from the deprecated preference.
-      prefs.getInt(context.getString(R.string.sound_fade_duration_key), 1)
+      prefs.getInt(
+        context.getString(R.string.sound_fade_duration_key),
+        context.resources.getInteger(R.integer.default_sound_fade_in_seconds)
+      )
     ) * 1000L
+  }
+
+  internal fun migrateLegacySoundFadeInPreference() {
+    val currentKey = context.getString(R.string.sound_fade_in_duration_key)
+    val legacyKey = context.getString(R.string.sound_fade_duration_key)
+    // The slider persists its default when first inflated, so copy a legacy choice before then.
+    if (!prefs.contains(currentKey) && prefs.contains(legacyKey)) {
+      prefs.edit { putInt(currentKey, prefs.getInt(legacyKey, 0)) }
+    }
   }
 
   /**

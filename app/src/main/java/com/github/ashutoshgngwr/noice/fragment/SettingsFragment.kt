@@ -46,8 +46,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
   )
 
   override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-    setPreferencesFromResource(R.xml.settings, rootKey)
     settingsRepository = SettingsRepository.newInstance(requireContext())
+    settingsRepository.migrateLegacySoundFadeInPreference()
+    setPreferencesFromResource(R.xml.settings, rootKey)
     presetRepository = PresetRepository.newInstance(requireContext())
     app = NoiceApplication.of(requireContext())
 
