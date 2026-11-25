@@ -1,0 +1,1 @@
+Sound fade-in now defaults to five seconds without changing saved settings. Updated background playback, wake-up alarms, and compatibility with newer Android versions while keeping Android 5.0 as the minimum.

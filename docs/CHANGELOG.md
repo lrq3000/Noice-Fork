@@ -1,5 +1,11 @@
 # Noice-Fork changelog
 
+## v1.5.1
+
+- Changed the default sound fade-in from one to five seconds. Existing choices are preserved, and fade-out and volume-change timing stay the same.
+- Raised the Android target to API 35 to address Play Protect's outdated-app warning while retaining Android 5.0 (API 21) as the minimum.
+- Updated background playback and wake-up alarms for newer Android versions. If Android requires **Alarms & reminders** access, grant it and tap **Schedule** again.
+
 ## v1.5.0
 
 - Added a volume slider on the active preset. It starts at the loudest saved sound’s level and adjusts every sound proportionally without modifying the saved preset.

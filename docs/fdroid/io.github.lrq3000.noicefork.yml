@@ -15,8 +15,8 @@ RepoType: git
 Repo: https://github.com/LRQ3000/Noice-Fork.git
 
 Builds:
-  - versionName: 1.5.0
-    versionCode: 55
+  - versionName: 1.5.1
+    versionCode: 56
     commit: REPLACE_WITH_PUBLISHED_COMMIT
     subdir: app
     gradle:
@@ -24,5 +24,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.5.0
-CurrentVersionCode: 55
+CurrentVersion: 1.5.1
+CurrentVersionCode: 56
