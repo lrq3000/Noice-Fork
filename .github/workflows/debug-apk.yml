@@ -12,18 +12,19 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
+      # Each pinned action declares its own Node.js 24 runtime.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Java for Gradle and the Android SDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
           java-version: '17'
           cache: gradle
       # Do not assume a hosted runner image has sdkmanager in PATH.
       - name: Install Android SDK 35 and build tools
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
         with:
           packages: 'platforms;android-35 build-tools;35.0.0'
           log-accepted-android-sdk-licenses: false
@@ -33,7 +34,7 @@ jobs:
         run: python3 scripts/verify_audio.py --apk app/build/outputs/apk/free/debug/app-free-debug.apk
       - name: Verify the APK's Android compatibility declarations
         run: python3 scripts/verify_android_compatibility.py --apk app/build/outputs/apk/free/debug/app-free-debug.apk --aapt2 "$ANDROID_HOME/build-tools/35.0.0/aapt2"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: Noice-Fork-debug
           path: app/build/outputs/apk/free/debug/app-free-debug.apk
